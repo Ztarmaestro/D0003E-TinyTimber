@@ -7,6 +7,9 @@
 
 #include <avr/io.h>
 #include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 
 void LCD_Init(void){
 	/*
@@ -43,33 +46,210 @@ void LCD_Init(void){
 
 }
 
-int main(void){
-// LCD settings
-LCD_Init();
+void printChar(int pos, int row1, int row2, int row3, int row4){
+	//cases for each position
+	//Bitmask and shifts are used to manipulate bits
+	switch (pos)
+	{
+		case 1:
+		LCDDR0  = (LCDDR0 & 0xF0) | row1  ;
+		LCDDR5  = (LCDDR5 & 0xF0) | row2 ;
+		LCDDR10 = (LCDDR10 & 0xF0) | row3 ;
+		LCDDR15 = (LCDDR15 & 0xF0) | row4 ;
+		break;
+		
+		case 2:
+		LCDDR0  = (LCDDR0 & 0x0F) | row1 << 4;
+		LCDDR5  = (LCDDR5 & 0x0F) | row2 << 4;
+		LCDDR10 = (LCDDR10 & 0x0F) | row3 << 4;
+		LCDDR15 = (LCDDR15 & 0x0F) | row4 << 4;
+		break;
+		
+		case 3:
+		LCDDR1  = (LCDDR1 & 0xF0) | row1;
+		LCDDR6  = (LCDDR6 & 0xF0) | row2;
+		LCDDR11 = (LCDDR11 & 0xF0) |row3;
+		LCDDR16 = (LCDDR16 & 0xF0) |row4;
+		break;
+		
+		case 4:
+		LCDDR1  = (LCDDR1 & 0x0F) | row1 << 4;
+		LCDDR6  = (LCDDR6 & 0x0F) | row2 << 4;
+		LCDDR11 = (LCDDR11 & 0x0F) | row3 << 4;
+		LCDDR16 = (LCDDR16 & 0x0F) | row4 << 4;
+		break;
 
-// Lab1 part1
-//writeChar(5,2);
+		case 5:
+		LCDDR2  = (LCDDR2 & 0xF0) |row1;
+		LCDDR7  = (LCDDR7 & 0xF0) |row2;
+		LCDDR12 = (LCDDR12 & 0xF0) |row3;
+		LCDDR17 = (LCDDR17 & 0xF0) |row4;
+		break;
 
-//Just a print test
-LCDDR0 = 0x0;
-LCDDR5 = 0x4;
-LCDDR10 = 0x4;
-LCDDR15 = 0x0;
-}
-
-/*
-public static writeChar(char ch, int pos){
-	if (pos <= 6){
-
-	} else {
-		int charToInt = atoi(ch);
-
-		if (charToInt <= 10){
-
-		} else {
-
-		}
-
+		case 6:
+		LCDDR2  = (LCDDR2 & 0x0F) | row1 << 4;
+		LCDDR7  = (LCDDR7 & 0x0F) | row2 << 4;
+		LCDDR12 = (LCDDR12 & 0x0F) | row3 << 4;
+		LCDDR17 = (LCDDR17 & 0x0F) | row4 << 4;
+		break;
 	}
 }
-*/
+
+void writeChar(char ch, int pos){
+	
+	int row1;
+	int row2;
+	int row3;
+	int row4;
+
+	if (pos > 6){
+		
+	} else {
+		
+		int charToInt = (int)ch;
+
+		if (charToInt >= 10){
+			row1 = 0x8;
+			row2 = 0x2;
+			row3 = 0x0;
+			row4 = 0xC;
+			
+			printChar(pos, row1, row2, row3, row4);	
+
+		} else {
+			
+			if (charToInt == 0){
+				row1 = 0x1;
+				row2 = 0x5;
+				row3 = 0x5;
+				row4 = 0x1;	
+				
+				printChar(pos, row1, row2, row3, row4);		
+			}
+			if (charToInt == 1){
+				row1 = 0x0;
+				row2 = 0x1;
+				row3 = 0x1;
+				row4 = 0x0;	
+				
+				printChar(pos, row1, row2, row3, row4);		
+			}
+			if (charToInt == 2){
+				row1 = 0x1;
+				row2 = 0x1;
+				row3 = 0xE;
+				row4 = 0x1;	
+				
+				printChar(pos, row1, row2, row3, row4);		
+			}
+			if (charToInt == 3){
+				row1 = 0x1;
+				row2 = 0x1;
+				row3 = 0xB;
+				row4 = 0x1;	
+				
+				printChar(pos, row1, row2, row3, row4);		
+			}
+			if (charToInt == 4){
+				row1 = 0x0;
+				row2 = 0x5;
+				row3 = 0xB;
+				row4 = 0x0;	
+				
+				printChar(pos, row1, row2, row3, row4);		
+			}
+			if (charToInt == 5){
+				row1 = 0x1;
+				row2 = 0x4;
+				row3 = 0xB;
+				row4 = 0x1;
+				
+				printChar(pos, row1, row2, row3, row4);			
+			}
+			if (charToInt == 6){
+				row1 = 0x1;
+				row2 = 0x4;
+				row3 = 0xF;
+				row4 = 0x1;		
+				
+				printChar(pos, row1, row2, row3, row4);	
+			}
+			if (charToInt == 7){
+				row1 = 0x1;
+				row2 = 0x1;
+				row3 = 0x1;
+				row4 = 0x0;			
+				
+				printChar(pos, row1, row2, row3, row4);
+			}
+			if (charToInt == 8){
+				row1 = 0x1;
+				row2 = 0x5;
+				row3 = 0xF;
+				row4 = 0x1;			
+				
+				printChar(pos, row1, row2, row3, row4);
+			}			
+			if (charToInt == 9){
+				row1 = 0x1;
+				row2 = 0x5;
+				row3 = 0xB;
+				row4 = 0x0;			
+				
+				printChar(pos, row1, row2, row3, row4);
+			}
+		}
+	}
+}
+
+void writeLong(long i){
+	
+	// Convert int to string
+	char charOf_i;
+	
+	// Display the six least significant digits
+	for(int count = 6; count > 0; count--){
+		if(count != 0 && i == 0){
+			break;
+		}
+		charOf_i = i % 10;
+		writeChar(charOf_i, count);
+		i = i / 10;
+	}
+}
+
+long is_Primes(long i){
+	long rest;
+	for (long n = 2; n < i; n++){
+		rest = i % n;
+		if (rest == 0){
+			return 0;
+		}
+	}
+	return 1;
+}
+
+void primes(){
+	long i = 1;
+	while (i > 0){
+		if (is_Primes(i) == 1){
+			writeLong(i);
+		}
+		i++;
+	}
+}
+
+int main(void){
+	// LCD settings
+	LCD_Init();
+
+	// Lab1 part1
+	//writeChar(6,6);
+	
+	// Lab1 part2
+	//writeLong(1234567890);
+	
+	// Lab1 part3
+	primes();
+
+}
