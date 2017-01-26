@@ -16,7 +16,9 @@ main.d main.o: .././main.c \
  d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h \
  d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\unistd.h \
  d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\sys\types.h \
- d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\time.h
+ d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\time.h \
+ d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\interrupt.h \
+ d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h
 
 d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h:
 
@@ -53,3 +55,7 @@ d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\unistd.h:
 d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\sys\types.h:
 
 d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\time.h:
+
+d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\interrupt.h:
+
+d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h:

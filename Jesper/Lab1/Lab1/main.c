@@ -10,12 +10,16 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <time.h>
+#include <avr/interrupt.h>
+#include <util/delay_basic.h>
 
 //register variables
 int reg1;
 int reg2;
 int reg3;
 int reg4;
+
+
 //settings for avr
 void LCD_Init(void)
 {
@@ -30,7 +34,8 @@ void LCD_Init(void)
 	LCDCRA = (1 << LCDEN) | (1 << LCDAB);
 	//Drive time 300ms, control voltage 3,35V
 	LCDCCR = (1 << LCDCC0) | (1 << LCDCC1) | (1 << LCDCC2) | (1 << LCDCC3);
-	
+	//timer with prescaler 256
+
 }
 //cases for number 0-9
 void caseNumbers(char ch)
@@ -109,10 +114,10 @@ void casePosition(int pos)
 	switch (pos)
 	{
 		case 1:
-			LCDDR0  = (LCDDR0 & 0xF0) | reg1  ;
-			LCDDR5  = (LCDDR5 & 0xF0) | reg2 ;
-			LCDDR10 = (LCDDR10 & 0xF0) | reg3 ;
-			LCDDR15 = (LCDDR15 & 0xF0) | reg4 ;
+			LCDDR0  = (LCDDR0 & 0xF0) | reg1;
+			LCDDR5  = (LCDDR5 & 0xF0) | reg2;
+			LCDDR10 = (LCDDR10 & 0xF0) | reg3;
+			LCDDR15 = (LCDDR15 & 0xF0) | reg4;
 			
 			break;
 		case 2:
@@ -187,7 +192,7 @@ void writeLong(long i)
 long is_prime(long i)
 {
 	long rest;
-	for (long n = 2; n < i; n++){
+	for (long n = 2; n*n < i; n++){			//sqrt n is faster
 		rest = i % n;
 		if (rest == 0){
 			return 0;		
@@ -198,6 +203,7 @@ long is_prime(long i)
 
 void primes()
 {
+	
 	long i = 1;
 	while (i > 0){
 		if (is_prime(i) == 1){		
@@ -207,11 +213,39 @@ void primes()
 	}
 }
 
+void primes2(unsigned long *l)
+{
+
+		if (is_prime(*l) == 1){
+			writeLong(*l);
+			
+			}
+		
+		*l += 1;
+}
+
+
+void blink()
+{
+	unsigned int timer1 = 0x3D09;
+
+	if (TCNT1 >= 31250){
+		LCDDR13 ^= 0x01;
+		TCNT1 = 0;
+	}
+	
+}
+
 int main(void)
 {
 	
 	LCD_Init();
-	primes();
+	TCCR1B = (1<<CS12);
 	
+	unsigned long startPrime = 1;
+	while(1){
+	blink();
+	primes2(&startPrime);
+	}
 }
 
