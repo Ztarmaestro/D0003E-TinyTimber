@@ -243,13 +243,13 @@ int main(void){
 	// LCD settings
 	LCD_Init();
 
-	// Lab1 part1
+	// Lab1 part1.1
 	//writeChar(6,6);
 	
-	// Lab1 part2
+	// Lab1 part1.2
 	//writeLong(1234567890);
 	
-	// Lab1 part3
+	// Lab1 part1.3
 	primes();
 
 }
