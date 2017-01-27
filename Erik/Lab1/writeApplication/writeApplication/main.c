@@ -220,7 +220,7 @@ void writeLong(long i){
 
 long is_Primes(long i){
 	long rest;
-	for (long n = 2; n < i; n++){
+	for (long n = 2; n*n < i; n++){
 		rest = i % n;
 		if (rest == 0){
 			return 0;
