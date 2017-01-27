@@ -18,6 +18,8 @@ int reg1;
 int reg2;
 int reg3;
 int reg4;
+//for the button
+int isPressed = 0;
 
 
 //settings for avr
@@ -35,7 +37,9 @@ void LCD_Init(void)
 	//Drive time 300ms, control voltage 3,35V
 	LCDCCR = (1 << LCDCC0) | (1 << LCDCC1) | (1 << LCDCC2) | (1 << LCDCC3);
 	//timer with prescaler 256
-
+	TCCR1B = (1<<CS12);
+	//button setting
+	PORTB = (1 << PINB7);
 }
 //cases for number 0-9
 void caseNumbers(char ch)
@@ -188,7 +192,7 @@ void writeLong(long i)
 }
 
 
-
+//helper function, checking if a number is prime
 long is_prime(long i)
 {
 	long rest;
@@ -200,7 +204,7 @@ long is_prime(long i)
 	}
 	return 1;
 }
-
+//prints primes on the AVR
 void primes()
 {
 	
@@ -212,40 +216,90 @@ void primes()
 		i++;
 	}
 }
-
+//prime using pointers (just testing how pointers work, still not sure)
 void primes2(unsigned long *l)
 {
-
 		if (is_prime(*l) == 1){
 			writeLong(*l);
-			
 			}
-		
 		*l += 1;
 }
 
 
 void blink()
 {
-	unsigned int timer1 = 0x3D09;
-
-	if (TCNT1 >= 31250){
+	unsigned int timer1 = 0x7ABC;
+	//xoring the register and then resets TCNT1
+	if (TCNT1 >= timer1){
 		LCDDR13 ^= 0x01;
 		TCNT1 = 0;
 	}
 	
 }
 
+void button()
+{
+	//int isPressed = 0;
+	while(1){
+	//"resets" the button when it has been pressed
+		if (((1 << PINB) == 0) && (isPressed == 1)){
+			isPressed = 0;
+		}
+		//if the segment is on, turn it off, if segment is off turn it on
+		if (((1 << PINB) == 1) && (isPressed == 0)){
+			if ((LCDDR18 == 0x01) && (isPressed == 0)){
+				LCDDR18 = 0x00;
+			} 
+			else{
+				LCDDR18 = 0x01;	
+			}
+			isPressed = 1;
+		}
+	}
+}
+
+//removed the while loop from "blink" and made variable global
+void button2()
+{
+		if (((1 << PINB) == 0) && (isPressed == 1)){
+			isPressed = 0;
+		}
+		if (((1 << PINB) == 1) && (isPressed == 0)){
+			if ((LCDDR18 == 0x01) && (isPressed == 0)){
+				LCDDR18 = 0x00;
+			}
+			else{
+				LCDDR18 = 0x01;
+			}
+			isPressed = 1;
+		}
+	}
+
+
 int main(void)
 {
-	
 	LCD_Init();
-	TCCR1B = (1<<CS12);
 	
-	unsigned long startPrime = 1;
+	//part 1
+	//writeLong(11186545);
+	//part2
+	/*while(1){
+	blink();
+	}*/
+	//part3
+	//button();
+	
+	//part 4
+	unsigned long startPrime = 25000;
 	while(1){
 	blink();
 	primes2(&startPrime);
+	button2();
 	}
+	
+	
+	
+	
 }
+
 
