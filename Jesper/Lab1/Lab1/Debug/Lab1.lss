@@ -861,7 +861,7 @@ int main(void)
  754:	de b7       	in	r29, 0x3e	; 62
 	LCD_Init();
  756:	0e 94 4c 00 	call	0x98	; 0x98 <LCD_Init>
-	}*/
+		}*/
 	//part3
 	//button();
 	
@@ -876,13 +876,13 @@ int main(void)
  766:	ab 83       	std	Y+3, r26	; 0x03
  768:	bc 83       	std	Y+4, r27	; 0x04
 	while(1){
-	blink();
+		blink();
  76a:	0e 94 53 03 	call	0x6a6	; 0x6a6 <blink>
-	primes2(&startPrime);
+		primes2(&startPrime);
  76e:	ce 01       	movw	r24, r28
  770:	01 96       	adiw	r24, 0x01	; 1
  772:	0e 94 29 03 	call	0x652	; 0x652 <primes2>
-	button2();
+		button2();
  776:	0e 94 65 03 	call	0x6ca	; 0x6ca <button2>
 	}
  77a:	f7 cf       	rjmp	.-18     	; 0x76a <main+0x20>

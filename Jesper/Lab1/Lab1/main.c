@@ -225,7 +225,7 @@ void primes2(unsigned long *l)
 		*l += 1;
 }
 
-
+//blink some segemnts on the lcd
 void blink()
 {
 	unsigned int timer1 = 0x7ABC;
@@ -236,7 +236,7 @@ void blink()
 	}
 	
 }
-
+//turn on/off some segements on lcd
 void button()
 {
 	//int isPressed = 0;
@@ -284,17 +284,17 @@ int main(void)
 	//writeLong(11186545);
 	//part2
 	/*while(1){
-	blink();
-	}*/
+		blink();
+		}*/
 	//part3
 	//button();
 	
 	//part 4
 	unsigned long startPrime = 25000;
 	while(1){
-	blink();
-	primes2(&startPrime);
-	button2();
+		blink();
+		primes2(&startPrime);
+		button2();
 	}
 	
 	
