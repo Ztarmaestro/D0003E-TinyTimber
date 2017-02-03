@@ -14,12 +14,13 @@
 #include <util/delay_basic.h>
 
 //register variables
-int reg1;
-int reg2;
-int reg3;
-int reg4;
+char reg1;
+char reg2;
+char reg3;
+char reg4;
 //for the button
 int isPressed = 0;
+long prime = 2;
 
 
 //settings for avr
@@ -47,61 +48,61 @@ void caseNumbers(char ch)
 	//cases for every number 0-9
 	switch (ch)
 	{
-		case 0 :
+		case '0' :
 			reg1 = 0x01;
 			reg2 = 0x05;
 			reg3 = 0x05;
 			reg4 = 0x01;
 			break;
-		case 1 :
+		case '1' :
 			reg1 = 0x00;
 			reg2 = 0x01;
 			reg3 = 0x01;
 			reg4 = 0x00;
 			break;
-		case 2 :
+		case '2' :
 			reg1 = 0x01;
 			reg2 = 0x01;
 			reg3 = 0x0E;
 			reg4 = 0x01;
 			break;
-		case 3 :
+		case '3' :
 			reg1 = 0x01;
 			reg2 = 0x01;
 			reg3 = 0x0B;
 			reg4 = 0x01;
 			break;
-		case 4 :
+		case '4' :
 			reg1 = 0x00;
 			reg2 = 0x05;
 			reg3 = 0x0B;
 			reg4 = 0x00;
 			break;
-		case 5 :
+		case '5':
 			reg1 = 0x01;
 			reg2 = 0x04;
 			reg3 = 0x0B;
 			reg4 = 0x01;
 			break;
-		case 6 :
+		case '6' :
 			reg1 = 0x01;
 			reg2 = 0x04;
 			reg3 = 0x0F;
 			reg4 = 0x01;
 			break;
-		case 7 :
+		case '7' :
 			reg1 = 0x01;
 			reg2 = 0x01;
 			reg3 = 0x01;
 			reg4 = 0x00;
 			break;
-		case 8 :
+		case '8' :
 			reg1 = 0x01;
 			reg2 = 0x05;
 			reg3 = 0x0F;
 			reg4 = 0x01;
 			break;
-		case 9 :
+		case '9' :
 			reg1 = 0x01;
 			reg2 = 0x05;
 			reg3 = 0x0B;
@@ -196,7 +197,7 @@ void writeLong(long i)
 long is_prime(long i)
 {
 	long rest;
-	for (long n = 2; n*n < i; n++){			//sqrt n is faster
+	for (long n = 2; n < i; n++){			//sqrt n is faster
 		rest = i % n;
 		if (rest == 0){
 			return 0;		
@@ -208,27 +209,34 @@ long is_prime(long i)
 void primes()
 {
 	
-	long i = 1;
-	while (i > 0){
-		if (is_prime(i) == 1){		
+	long i = 25000;
+
+		if (is_prime(prime) == 1){		
 			writeLong(i);
 		}
 		i++;
-	}
+	
 }
 //prime using pointers (just testing how pointers work, still not sure)
 void primes2(unsigned long *l)
 {
+
+		while(1){
 		if (is_prime(*l) == 1){
+			//prime = *l;
 			writeLong(*l);
+			*l += 1;
+			break;
 			}
+
 		*l += 1;
+	}
 }
 
 //blink some segemnts on the lcd
 void blink()
 {
-	unsigned int timer1 = 0x7ABC;
+	unsigned int timer1 = 0x3D08;
 	//xoring the register and then resets TCNT1
 	if (TCNT1 >= timer1){
 		LCDDR13 ^= 0x01;
@@ -279,23 +287,28 @@ void button2()
 int main(void)
 {
 	LCD_Init();
-	
+	//primes();
+	writeChar('1',6);
+	//primes();
 	//part 1
 	//writeLong(11186545);
 	//part2
-	/*while(1){
+/*
+	while(1){
 		blink();
 		}*/
 	//part3
 	//button();
 	
 	//part 4
+
+/*
 	unsigned long startPrime = 25000;
 	while(1){
 		blink();
 		primes2(&startPrime);
 		button2();
-	}
+	}*/
 	
 	
 	
