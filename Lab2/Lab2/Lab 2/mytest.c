@@ -9,7 +9,8 @@ char reg1;
 char reg2;
 char reg3;
 char reg4;
-
+int pp;
+mutex mute = MUTEX_INIT;
 //settings for avr
 void LCD_Init(void)
 {
@@ -28,10 +29,7 @@ void LCD_Init(void)
 	TCCR1B = (1<<CS12);
 	//button setting
 	PORTB = (1 << PINB7);
-	//External input
-	EIMSK = (1 << PCIE1);
-	PCMSK1 = (1 << PCINT15);
-	DDRB = (1 << PINB7);
+
 }
 //cases for number 0-9
 void caseNumbers(char ch)
@@ -177,10 +175,17 @@ long is_prime(long i)
 }
 
 void printAt(long num, int pos) {
-	int pp = pos;
+	lock(&mute);
+	pp = pos;
 	writeChar( (num % 100) / 10 + '0', pp);
+	int loop_test;
+	for(int test; test < 1000; test++){
+		
+		loop_test++;
+		}
 	pp++;
 	writeChar( num % 10 + '0', pp);
+	unlock(&mute);
 //	yield();
 }
 
