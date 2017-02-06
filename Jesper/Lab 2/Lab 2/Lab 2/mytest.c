@@ -195,23 +195,9 @@ void computePrimes(int pos) {
 }
 
 ISR(PCINT1_vect){
-	int isPressed = 0;
-	while(1){
-		//"resets" the button when it has been pressed
-
-		if ((1 << PINB) == 0){// && (isPressed == 1)){
-			isPressed = 0;
+		if ((1 << PINB) == 0){
 			yield();
 		}
-		//if the segment is on, turn it off, if segment is off turn it on
-		if ((1 << PINB) == 1){ //&& (isPressed == 0)){
-				yield();
-			
-			}
-			isPressed = 1;
-		
-	}
-
 }
 
 int main() {
