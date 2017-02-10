@@ -1,5 +1,6 @@
 #include "tinythreads.h"
 #include <avr/io.h>
+#include <avr/iom169p.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -25,10 +26,11 @@ void LCD_Init(void)
 	LCDCRA = (1 << LCDEN) | (1 << LCDAB);
 	//Drive time 300ms, control voltage 3,35V
 	LCDCCR = (1 << LCDCC0) | (1 << LCDCC1) | (1 << LCDCC2) | (1 << LCDCC3);
+/*
 	//timer with prescaler 256
 	TCCR1B = (1<<CS12);
 	//button setting
-	PORTB = (1 << PINB7);
+	PORTB = (1 << PINB7);*/
 
 }
 //cases for number 0-9
@@ -203,6 +205,9 @@ ISR(PCINT1_vect){
 		if ((1 << PINB) == 0){
 			yield();
 		}
+}
+ISR(TIMER1_COMPA_vect){
+	yield();
 }
 
 int main() {
