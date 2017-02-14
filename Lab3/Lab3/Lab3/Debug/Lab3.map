@@ -360,36 +360,36 @@ END GROUP
                 0x000000aa                __vector_20
                 0x000000ae                . = ALIGN (0x2)
  *(.text.*)
- .text.button   0x000000ae       0x7e main.o
-                0x000000ae                button
  .text.LCD_Init
-                0x0000012c       0x24 main.o
-                0x0000012c                LCD_Init
+                0x000000ae       0x2c main.o
+                0x000000ae                LCD_Init
  .text.caseNumbers
-                0x00000150       0xf6 main.o
-                0x00000150                caseNumbers
+                0x000000da       0xf6 main.o
+                0x000000da                caseNumbers
  .text.casePosition
-                0x00000246      0x22c main.o
-                0x00000246                casePosition
+                0x000001d0      0x22c main.o
+                0x000001d0                casePosition
  .text.writeChar
-                0x00000472       0x16 main.o
-                0x00000472                writeChar
+                0x000003fc       0x16 main.o
+                0x000003fc                writeChar
  .text.is_prime
-                0x00000488       0xb4 main.o
-                0x00000488                is_prime
- .text.printAt  0x0000053c       0x88 main.o
-                0x0000053c                printAt
+                0x00000412       0xb4 main.o
+                0x00000412                is_prime
+ .text.printAt  0x000004c6       0x88 main.o
+                0x000004c6                printAt
+ .text.button   0x0000054e       0x80 main.o
+                0x0000054e                button
  .text.computePrimes
-                0x000005c4       0x30 main.o
-                0x000005c4                computePrimes
+                0x000005ce       0x30 main.o
+                0x000005ce                computePrimes
  .text.__vector_3
-                0x000005f4       0x5c main.o
-                0x000005f4                __vector_3
+                0x000005fe       0x5c main.o
+                0x000005fe                __vector_3
  .text.__vector_7
-                0x00000650       0x48 main.o
-                0x00000650                __vector_7
- .text.main     0x00000698       0x22 main.o
-                0x00000698                main
+                0x0000065a       0x48 main.o
+                0x0000065a                __vector_7
+ .text.main     0x000006a2       0x18 main.o
+                0x000006a2                main
  .text.enqueue  0x000006ba       0x2e tinythreads.o
  .text.dispatch
                 0x000006e8       0x40 tinythreads.o
@@ -458,38 +458,35 @@ END GROUP
                 0x00800104                _edata = .
                 0x00800104                PROVIDE (__data_end, .)
 
-.bss            0x00800104      0x22f
+.bss            0x00800104      0x22d
                 0x00800104                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
  .bss.mute      0x00800104        0x4 main.o
                 0x00800104                mute
- .bss.isPressed
-                0x00800108        0x2 main.o
-                0x00800108                isPressed
  .bss.initialized
-                0x0080010a        0x2 tinythreads.o
-                0x0080010a                initialized
- .bss.readyQ    0x0080010c        0x2 tinythreads.o
-                0x0080010c                readyQ
+                0x00800108        0x2 tinythreads.o
+                0x00800108                initialized
+ .bss.readyQ    0x0080010a        0x2 tinythreads.o
+                0x0080010a                readyQ
  *(COMMON)
- COMMON         0x0080010e        0x4 main.o
-                0x0080010e                reg1
-                0x0080010f                reg3
-                0x00800110                reg4
-                0x00800111                reg2
- COMMON         0x00800112      0x221 tinythreads.o
-                0x00800112                initp
-                0x0080017f                threads
-                0x00800333                PROVIDE (__bss_end, .)
+ COMMON         0x0080010c        0x4 main.o
+                0x0080010c                reg1
+                0x0080010d                reg3
+                0x0080010e                reg4
+                0x0080010f                reg2
+ COMMON         0x00800110      0x221 tinythreads.o
+                0x00800110                initp
+                0x0080017d                threads
+                0x00800331                PROVIDE (__bss_end, .)
                 0x00000a3e                __data_load_start = LOADADDR (.data)
                 0x00000a42                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x00800333        0x0
+.noinit         0x00800331        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end, .)
-                0x00800333                _end = .
+                0x00800331                _end = .
                 [!provide]                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
@@ -565,41 +562,41 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x1309
+.debug_info     0x00000000     0x1356
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x7b6 D:/ATMELSTUDIOS/7.0/Packs/atmel/ATmega_DFP/1.1.130/gcc/dev/atmega169p/avr5/crtatmega169p.o
- .debug_info    0x000007b6      0x58c main.o
- .debug_info    0x00000d42      0x5c7 tinythreads.o
+ .debug_info    0x000007b6      0x5d9 main.o
+ .debug_info    0x00000d8f      0x5c7 tinythreads.o
 
-.debug_abbrev   0x00000000      0xb85
+.debug_abbrev   0x00000000      0xb96
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x74b D:/ATMELSTUDIOS/7.0/Packs/atmel/ATmega_DFP/1.1.130/gcc/dev/atmega169p/avr5/crtatmega169p.o
- .debug_abbrev  0x0000074b      0x1f1 main.o
- .debug_abbrev  0x0000093c      0x249 tinythreads.o
+ .debug_abbrev  0x0000074b      0x202 main.o
+ .debug_abbrev  0x0000094d      0x249 tinythreads.o
 
-.debug_line     0x00000000      0x8ad
+.debug_line     0x00000000      0x8a9
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x121 D:/ATMELSTUDIOS/7.0/Packs/atmel/ATmega_DFP/1.1.130/gcc/dev/atmega169p/avr5/crtatmega169p.o
- .debug_line    0x00000121      0x4f2 main.o
- .debug_line    0x00000613      0x29a tinythreads.o
+ .debug_line    0x00000121      0x4ee main.o
+ .debug_line    0x0000060f      0x29a tinythreads.o
 
 .debug_frame    0x00000000      0x2c0
  *(.debug_frame)
  .debug_frame   0x00000000      0x220 main.o
  .debug_frame   0x00000220       0xa0 tinythreads.o
 
-.debug_str      0x00000000      0x57e
+.debug_str      0x00000000      0x584
  *(.debug_str)
  .debug_str     0x00000000      0x2b3 D:/ATMELSTUDIOS/7.0/Packs/atmel/ATmega_DFP/1.1.130/gcc/dev/atmega169p/avr5/crtatmega169p.o
- .debug_str     0x000002b3      0x223 main.o
-                                0x267 (size before relaxing)
- .debug_str     0x000004d6       0xa8 tinythreads.o
+ .debug_str     0x000002b3      0x229 main.o
+                                0x26d (size before relaxing)
+ .debug_str     0x000004dc       0xa8 tinythreads.o
                                 0x258 (size before relaxing)
 
-.debug_loc      0x00000000      0xbda
+.debug_loc      0x00000000      0xc1a
  *(.debug_loc)
- .debug_loc     0x00000000      0x84f main.o
- .debug_loc     0x0000084f      0x38b tinythreads.o
+ .debug_loc     0x00000000      0x88f main.o
+ .debug_loc     0x0000088f      0x38b tinythreads.o
 
 .debug_macinfo
  *(.debug_macinfo)
