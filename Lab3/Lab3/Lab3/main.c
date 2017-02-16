@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <avr/interrupt.h>
+
 //register variables
 char reg1;
 char reg2;
@@ -13,8 +14,9 @@ char reg4;
 
 //int isPressed = 0;
 long prime = 2;
+	long count;
 
-mutex mute = MUTEX_INIT;
+//mutex mute = MUTEX_INIT;
 //settings for avr
 void LCD_Init(void)
 {
@@ -30,9 +32,9 @@ void LCD_Init(void)
 	//Drive time 300ms, control voltage 3,35V
 	LCDCCR = (1 << LCDCC0) | (1 << LCDCC1) | (1 << LCDCC2) | (1 << LCDCC3);
 	//timer with prescaler 256
-	TCCR1B = (1<<CS12);
+	//TCCR1B = (1<<CS12);
 	//button setting
-	PORTB = (1 << PINB7);
+	//PORTB = (1 << PINB7);
 
 }
 //cases for number 0-9
@@ -205,18 +207,31 @@ void primes()
 
 void blink()
 {
-	unsigned int timer1 = 0x3D08;
-	//xoring the register and then resets TCNT1
-	if (TCNT1 >= timer1){
-		(LCDDR13 ^= 0x01);
-		TCNT1 = 0;
+		//unsigned int timer1 = 0x3D08;
+		//xoring the register and then resets TCNT1
+		while(1){
+		if (getbTimer() >= 10){
+		//if (blinkTimer == 1){
+			(LCDDR13 ^= 0x01);
+			setbTimer();
+		}
 	}
+
 }
 
+void printAt(long num, int pos) {
+	//lock(&mute);
+	int pp = pos;
+	writeChar( (num % 100) / 10 + '0', pp);
+	pp++;
+	writeChar( num % 10 + '0', pp);
+	//unlock(&mute);
+//	yield();
+}
 void button()
 {
 	int isPressed = 0;
-	long count;
+
 	while(1){
 		//"resets" the button when it has been pressed
 		if (((1 << PINB) == 0) && (isPressed == 1)){
@@ -231,16 +246,6 @@ void button()
 		}
 	
 }
-void printAt(long num, int pos) {
-	lock(&mute);
-	int pp = pos;
-	writeChar( (num % 100) / 10 + '0', pp);
-	pp++;
-	writeChar( num % 10 + '0', pp);
-	unlock(&mute);
-//	yield();
-}
-
 
 void computePrimes(int pos) {
 	long n;
@@ -253,17 +258,17 @@ void computePrimes(int pos) {
 }
 
 ISR(PCINT1_vect){
-		if ((1 << PINB) == 0){
-			yield();
-		}
+	if ((1 << PINB) == 0){
+		yield();
+	}
 }
-ISR(TIMER1_COMPA_vect){
-	yield();
-}
+
 
 int main() {
 	LCD_Init();
-	spawn(button, 3);
+	spawn(button, 69);
+	spawn(blink, 88);
  	computePrimes(0);
-	//blink();
+
+	
 }

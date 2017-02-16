@@ -11,6 +11,8 @@
 #define SETSTACK(buf,a) *((unsigned int *)(buf)+8) = (unsigned int)(a) + STACKSIZE - 4; \
                         *((unsigned int *)(buf)+9) = (unsigned int)(a) + STACKSIZE - 4
 
+
+static int blinkTimer = 0;
 struct thread_block {
     void (*function)(int);   // code to run
     int arg;                 // argument to the above
@@ -44,10 +46,9 @@ static void initialize(void) {
 		PORTB = (1 << PINB7);
 		//timer with prescaler 1024
 		TCCR1B = (1<<CS12) | (1 << CS10) | (1 << WGM12);
-		//button setting
-		PORTB = (1 << PINB7);
 		//50 ms period
 		OCR1A = 0x187;
+
 		TIMSK1 = (1 << OCIE1A);
 
 		//reset timer
@@ -55,18 +56,15 @@ static void initialize(void) {
 		initialized = 1;
 	}
 
-/*
-	EIMSK = (1 << PCIE1);
-	PCMSK1 = (1 << PCINT15) | (1 << PCINT13);
-	DDRB = (1 << PINB7);
-	*/
-	//CTC MODE
-/*
-	TCCR1A = (1 <<COM1B0);
-	TCCR1B = (1 << WGM12);
-	//timer output compare A
-	;
-	*/
+
+
+int getbTimer(void){
+	return blinkTimer; 
+}
+
+void setbTimer(void){
+	blinkTimer = 0;
+}
 
 
 static void enqueue(thread p, thread *queue) {
@@ -152,5 +150,9 @@ void unlock(mutex *m) {
 		m->locked = 0;
 	}
 	ENABLE();
+}
+ISR(TIMER1_COMPA_vect){
+	blinkTimer++;
+	yield();
 }
 
