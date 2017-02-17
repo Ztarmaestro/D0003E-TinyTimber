@@ -45,8 +45,8 @@ static void initialize(void) {
 		PORTB = (1 << PINB7);
 		//timer with prescaler 1024
 		TCCR1B = (1<<CS12) | (1 << CS10) | (1 << WGM12);
-		//50 ms period
-		OCR1A = 0x187;
+		//500 ms period
+		OCR1A = 0xF42;
 
 		TIMSK1 = (1 << OCIE1A);
 		//reset timer
@@ -64,7 +64,19 @@ void setbTimer(void){
 	blinkTimer = 0;
 }
 
+static void enqueue(thread p, thread *queue) {
+	p->next = NULL;
+	if (*queue == NULL) {
+		*queue = p;
+		} else {
+		thread q = *queue;
+		while (q->next)
+		q = q->next;
+		q->next = p;
+	}
+}
 
+/*
 static void enqueue(thread p, thread *queue) {
     p->next = NULL;
     if (*queue == NULL) {
@@ -75,7 +87,7 @@ static void enqueue(thread p, thread *queue) {
             q = q->next;
         q->next = p;
     }
-}
+}*/
 
 static thread dequeue(thread *queue) {
     thread p = *queue;
@@ -150,8 +162,5 @@ void unlock(mutex *m) {
 	ENABLE();
 }
 
-ISR(TIMER1_COMPA_vect){
-	blinkTimer++;
-	yield();
-}
+
 

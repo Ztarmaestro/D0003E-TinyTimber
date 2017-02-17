@@ -11,11 +11,12 @@ char reg1;
 char reg2;
 char reg3;
 char reg4;
-
+int count;
 //int isPressed = 0;
 long prime = 2;
 
-//mutex mute = MUTEX_INIT;
+mutex muteButton = MUTEX_INIT;
+mutex muteBlink = MUTEX_INIT;
 //settings for avr
 void LCD_Init(void)
 {
@@ -209,14 +210,16 @@ void blink()
 		//unsigned int timer1 = 0x3D08;
 		//xoring the register and then resets TCNT1
 		while(1){
+		lock(&muteBlink);
 		if (getbTimer() >= 10){
 		//if (blinkTimer == 1){
 			(LCDDR13 ^= 0x01);
 			setbTimer();
 		}
 	}
-
 }
+
+
 
 void printAt(long num, int pos) {
 	//lock(&mute);
@@ -229,9 +232,10 @@ void printAt(long num, int pos) {
 }
 void button()
 {
-	int isPressed = 0;
-	long count = 0;
-	while(1){
+		int isPressed = 0;
+		long count = 0;
+		while(1){
+		lock(&muteButton);
 		//"resets" the button when it has been pressed
 		if (((1 << PINB) == 0) && (isPressed == 1)){
 			isPressed = 0;
@@ -242,9 +246,9 @@ void button()
 			printAt(count, 3);
 			}
 			isPressed = 1;
-		}
-	
+	}
 }
+
 
 void computePrimes(int pos) {
 	long n;
@@ -256,14 +260,14 @@ void computePrimes(int pos) {
 	}
 }
 
-/*
 ISR(PCINT1_vect){
 	if ((1 << PINB) == 1){
 		count++;
+		unlock(&muteButton);
 		printAt(count, 3);
 		yield();
 	}
-}*/
+}
 
 
 int main() {
@@ -273,4 +277,8 @@ int main() {
  	computePrimes(0);
 
 	
+}
+ISR(TIMER1_COMPA_vect){
+	unlock(&muteBlink);
+	yield();
 }

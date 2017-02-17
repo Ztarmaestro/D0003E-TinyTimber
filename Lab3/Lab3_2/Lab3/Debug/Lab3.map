@@ -24,6 +24,7 @@ initp               0x6d              tinythreads.o
 reg1                0x1               main.o
 threads             0x1b4             tinythreads.o
 reg3                0x1               main.o
+count               0x2               main.o
 reg4                0x1               main.o
 reg2                0x1               main.o
 
@@ -41,8 +42,6 @@ Discarded input sections
  .text          0x00000000        0x0 tinythreads.o
  .data          0x00000000        0x0 tinythreads.o
  .bss           0x00000000        0x0 tinythreads.o
- .text.lock     0x00000000       0x4e tinythreads.o
- .text.unlock   0x00000000       0x4a tinythreads.o
  .text          0x00000000        0x0 d:/atmelstudios/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_divmodsi4.o)
  .data          0x00000000        0x0 d:/atmelstudios/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_divmodsi4.o)
  .bss           0x00000000        0x0 d:/atmelstudios/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_divmodsi4.o)
@@ -277,7 +276,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x97a
+.text           0x00000000      0xa92
  *(.vectors)
  .vectors       0x00000000       0x5c D:/ATMELSTUDIOS/7.0/Packs/atmel/ATmega_DFP/1.1.130/gcc/dev/atmega169p/avr5/crtatmega169p.o
                 0x00000000                __vector_default
@@ -343,7 +342,6 @@ END GROUP
                 0x000000aa                __vector_12
                 0x000000aa                __bad_interrupt
                 0x000000aa                __vector_6
-                0x000000aa                __vector_3
                 0x000000aa                __vector_11
                 0x000000aa                __vector_13
                 0x000000aa                __vector_17
@@ -362,68 +360,75 @@ END GROUP
                 0x000000aa                __vector_20
                 0x000000ae                . = ALIGN (0x2)
  *(.text.*)
- .text.blink    0x000000ae       0x1a main.o
+ .text.blink    0x000000ae       0x22 main.o
                 0x000000ae                blink
  .text.LCD_Init
-                0x000000c8       0x26 main.o
-                0x000000c8                LCD_Init
+                0x000000d0       0x26 main.o
+                0x000000d0                LCD_Init
  .text.caseNumbers
-                0x000000ee       0xf6 main.o
-                0x000000ee                caseNumbers
+                0x000000f6       0xf6 main.o
+                0x000000f6                caseNumbers
  .text.casePosition
-                0x000001e4      0x22c main.o
-                0x000001e4                casePosition
+                0x000001ec      0x22c main.o
+                0x000001ec                casePosition
  .text.writeChar
-                0x00000410       0x16 main.o
-                0x00000410                writeChar
+                0x00000418       0x16 main.o
+                0x00000418                writeChar
  .text.is_prime
-                0x00000426       0xb4 main.o
-                0x00000426                is_prime
- .text.printAt  0x000004da       0x74 main.o
-                0x000004da                printAt
- .text.button   0x0000054e       0x86 main.o
-                0x0000054e                button
+                0x0000042e       0xb4 main.o
+                0x0000042e                is_prime
+ .text.printAt  0x000004e2       0x74 main.o
+                0x000004e2                printAt
+ .text.button   0x00000556       0x7a main.o
+                0x00000556                button
  .text.computePrimes
-                0x000005d4       0x30 main.o
-                0x000005d4                computePrimes
- .text.main     0x00000604       0x24 main.o
-                0x00000604                main
- .text.enqueue  0x00000628       0x2e tinythreads.o
- .text.dispatch
-                0x00000656       0x40 tinythreads.o
- .text.getbTimer
-                0x00000696        0xa tinythreads.o
-                0x00000696                getbTimer
- .text.setbTimer
-                0x000006a0        0xa tinythreads.o
-                0x000006a0                setbTimer
- .text.spawn    0x000006aa      0x12c tinythreads.o
-                0x000006aa                spawn
- .text.yield    0x000007d6       0x36 tinythreads.o
-                0x000007d6                yield
+                0x000005d0       0x30 main.o
+                0x000005d0                computePrimes
+ .text.__vector_3
+                0x00000600       0x8e main.o
+                0x00000600                __vector_3
+ .text.main     0x0000068e       0x24 main.o
+                0x0000068e                main
  .text.__vector_7
-                0x0000080c       0x5a tinythreads.o
-                0x0000080c                __vector_7
+                0x000006b2       0x50 main.o
+                0x000006b2                __vector_7
+ .text.enqueue  0x00000702       0x2e tinythreads.o
+ .text.dispatch
+                0x00000730       0x40 tinythreads.o
+ .text.getbTimer
+                0x00000770        0xa tinythreads.o
+                0x00000770                getbTimer
+ .text.setbTimer
+                0x0000077a        0xa tinythreads.o
+                0x0000077a                setbTimer
+ .text.spawn    0x00000784      0x12c tinythreads.o
+                0x00000784                spawn
+ .text.yield    0x000008b0       0x36 tinythreads.o
+                0x000008b0                yield
+ .text.lock     0x000008e6       0x4e tinythreads.o
+                0x000008e6                lock
+ .text.unlock   0x00000934       0x4a tinythreads.o
+                0x00000934                unlock
  .text.libgcc.div
-                0x00000866       0x2e d:/atmelstudios/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_divmodsi4.o)
-                0x00000866                __divmodsi4
+                0x0000097e       0x2e d:/atmelstudios/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_divmodsi4.o)
+                0x0000097e                __divmodsi4
  .text.libgcc.div
-                0x00000894       0x10 d:/atmelstudios/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_negsi2.o)
-                0x00000894                __negsi2
- .text.libgcc   0x000008a4        0xc d:/atmelstudios/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_tablejump2.o)
-                0x000008a4                __tablejump2__
+                0x000009ac       0x10 d:/atmelstudios/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_negsi2.o)
+                0x000009ac                __negsi2
+ .text.libgcc   0x000009bc        0xc d:/atmelstudios/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_tablejump2.o)
+                0x000009bc                __tablejump2__
  .text.libgcc.div
-                0x000008b0       0x44 d:/atmelstudios/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_udivmodsi4.o)
-                0x000008b0                __udivmodsi4
+                0x000009c8       0x44 d:/atmelstudios/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_udivmodsi4.o)
+                0x000009c8                __udivmodsi4
  .text.avr-libc
-                0x000008f4       0x82 d:/atmelstudios/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr5\libc.a(setjmp.o)
-                0x000008f4                setjmp
-                0x00000934                longjmp
-                0x00000976                . = ALIGN (0x2)
+                0x00000a0c       0x82 d:/atmelstudios/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr5\libc.a(setjmp.o)
+                0x00000a0c                setjmp
+                0x00000a4c                longjmp
+                0x00000a8e                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00000976        0x0 d:/atmelstudios/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
-                0x00000976                _exit
-                0x00000976                exit
+ .fini9         0x00000a8e        0x0 d:/atmelstudios/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
+                0x00000a8e                _exit
+                0x00000a8e                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -442,11 +447,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00000976        0x4 d:/atmelstudios/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
+ .fini0         0x00000a8e        0x4 d:/atmelstudios/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x0000097a                _etext = .
+                0x00000a92                _etext = .
 
-.data           0x00800100        0x4 load address 0x0000097a
+.data           0x00800100        0x4 load address 0x00000a92
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -461,35 +466,42 @@ END GROUP
                 0x00800104                _edata = .
                 0x00800104                PROVIDE (__data_end, .)
 
-.bss            0x00800104      0x22b
+.bss            0x00800104      0x235
                 0x00800104                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
+ .bss.muteBlink
+                0x00800104        0x4 main.o
+                0x00800104                muteBlink
+ .bss.muteButton
+                0x00800108        0x4 main.o
+                0x00800108                muteButton
  .bss.initialized
-                0x00800104        0x2 tinythreads.o
-                0x00800104                initialized
- .bss.readyQ    0x00800106        0x2 tinythreads.o
-                0x00800106                readyQ
+                0x0080010c        0x2 tinythreads.o
+                0x0080010c                initialized
+ .bss.readyQ    0x0080010e        0x2 tinythreads.o
+                0x0080010e                readyQ
  .bss.blinkTimer
-                0x00800108        0x2 tinythreads.o
+                0x00800110        0x2 tinythreads.o
  *(COMMON)
- COMMON         0x0080010a        0x4 main.o
-                0x0080010a                reg1
-                0x0080010b                reg3
-                0x0080010c                reg4
-                0x0080010d                reg2
- COMMON         0x0080010e      0x221 tinythreads.o
-                0x0080010e                initp
-                0x0080017b                threads
-                0x0080032f                PROVIDE (__bss_end, .)
-                0x0000097a                __data_load_start = LOADADDR (.data)
-                0x0000097e                __data_load_end = (__data_load_start + SIZEOF (.data))
+ COMMON         0x00800112        0x6 main.o
+                0x00800112                reg1
+                0x00800113                reg3
+                0x00800114                count
+                0x00800116                reg4
+                0x00800117                reg2
+ COMMON         0x00800118      0x221 tinythreads.o
+                0x00800118                initp
+                0x00800185                threads
+                0x00800339                PROVIDE (__bss_end, .)
+                0x00000a92                __data_load_start = LOADADDR (.data)
+                0x00000a96                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x0080032f        0x0
+.noinit         0x00800339        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end, .)
-                0x0080032f                _end = .
+                0x00800339                _end = .
                 [!provide]                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
@@ -555,51 +567,51 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000       0xd8
+.debug_aranges  0x00000000       0xe0
  *(.debug_aranges)
  .debug_aranges
-                0x00000000       0x78 main.o
+                0x00000000       0x88 main.o
  .debug_aranges
-                0x00000078       0x60 tinythreads.o
+                0x00000088       0x58 tinythreads.o
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x12b7
+.debug_info     0x00000000     0x141e
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x7b6 D:/ATMELSTUDIOS/7.0/Packs/atmel/ATmega_DFP/1.1.130/gcc/dev/atmega169p/avr5/crtatmega169p.o
- .debug_info    0x000007b6      0x4d5 main.o
- .debug_info    0x00000c8b      0x62c tinythreads.o
+ .debug_info    0x000007b6      0x660 main.o
+ .debug_info    0x00000e16      0x608 tinythreads.o
 
-.debug_abbrev   0x00000000      0xb73
+.debug_abbrev   0x00000000      0xbb4
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x74b D:/ATMELSTUDIOS/7.0/Packs/atmel/ATmega_DFP/1.1.130/gcc/dev/atmega169p/avr5/crtatmega169p.o
- .debug_abbrev  0x0000074b      0x19e main.o
- .debug_abbrev  0x000008e9      0x28a tinythreads.o
+ .debug_abbrev  0x0000074b      0x1df main.o
+ .debug_abbrev  0x0000092a      0x28a tinythreads.o
 
-.debug_line     0x00000000      0x8a5
+.debug_line     0x00000000      0x8df
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x121 D:/ATMELSTUDIOS/7.0/Packs/atmel/ATmega_DFP/1.1.130/gcc/dev/atmega169p/avr5/crtatmega169p.o
- .debug_line    0x00000121      0x4ae main.o
- .debug_line    0x000005cf      0x2d6 tinythreads.o
+ .debug_line    0x00000121      0x50a main.o
+ .debug_line    0x0000062b      0x2b4 tinythreads.o
 
-.debug_frame    0x00000000      0x288
+.debug_frame    0x00000000      0x2e0
  *(.debug_frame)
- .debug_frame   0x00000000      0x170 main.o
- .debug_frame   0x00000170      0x118 tinythreads.o
+ .debug_frame   0x00000000      0x220 main.o
+ .debug_frame   0x00000220       0xc0 tinythreads.o
 
-.debug_str      0x00000000      0x58c
+.debug_str      0x00000000      0x5ae
  *(.debug_str)
  .debug_str     0x00000000      0x2b3 D:/ATMELSTUDIOS/7.0/Packs/atmel/ATmega_DFP/1.1.130/gcc/dev/atmega169p/avr5/crtatmega169p.o
- .debug_str     0x000002b3      0x1d2 main.o
-                                0x211 (size before relaxing)
- .debug_str     0x00000485      0x107 tinythreads.o
-                                0x282 (size before relaxing)
+ .debug_str     0x000002b3      0x23f main.o
+                                0x283 (size before relaxing)
+ .debug_str     0x000004f2       0xbc tinythreads.o
+                                0x279 (size before relaxing)
 
-.debug_loc      0x00000000      0xb75
+.debug_loc      0x00000000      0xc30
  *(.debug_loc)
- .debug_loc     0x00000000      0x733 main.o
- .debug_loc     0x00000733      0x442 tinythreads.o
+ .debug_loc     0x00000000      0x8b9 main.o
+ .debug_loc     0x000008b9      0x377 tinythreads.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -619,10 +631,10 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000       0xd8
+.debug_ranges   0x00000000       0xe0
  *(.debug_ranges)
- .debug_ranges  0x00000000       0x88 main.o
- .debug_ranges  0x00000088       0x50 tinythreads.o
+ .debug_ranges  0x00000000       0x98 main.o
+ .debug_ranges  0x00000098       0x48 tinythreads.o
 
 .debug_macro
  *(.debug_macro)
