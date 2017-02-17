@@ -66,13 +66,12 @@ void setbTimer(void){
 
 static void enqueue(thread p, thread *queue) {
 	p->next = NULL;
-	if (*queue == NULL) {
+	if (*queue == NULL){
 		*queue = p;
-		} else {
+		}else{
 		thread q = *queue;
-		while (q->next)
-		q = q->next;
-		q->next = p;
+		p->next = q;
+		*queue = p;
 	}
 }
 
@@ -132,11 +131,16 @@ void spawn(void (* function)(int), int arg) {
 
 void yield(void) 
 {
-	DISABLE();	
-	enqueue(current, &readyQ);
-	dispatch(dequeue(&readyQ));
-	ENABLE();
+	DISABLE();
+	if (readyQ != NULL){
+		thread p = dequeue(&readyQ);
+		enqueue(current, &readyQ);
+		dispatch(p);
+		//dispatch(dequeue(&readyQ));
+		ENABLE();
+	}
 }
+
 
 void lock(mutex *m) {
 	DISABLE();

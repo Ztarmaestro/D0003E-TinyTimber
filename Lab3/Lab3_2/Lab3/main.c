@@ -11,12 +11,13 @@ char reg1;
 char reg2;
 char reg3;
 char reg4;
-int count;
+long count;
 //int isPressed = 0;
 long prime = 2;
 
 mutex muteButton = MUTEX_INIT;
 mutex muteBlink = MUTEX_INIT;
+mutex mutePrime = MUTEX_INIT;
 //settings for avr
 void LCD_Init(void)
 {
@@ -211,11 +212,12 @@ void blink()
 		//xoring the register and then resets TCNT1
 		while(1){
 		lock(&muteBlink);
-		if (getbTimer() >= 10){
+		if (getbTimer() >= 1){
 		//if (blinkTimer == 1){
 			(LCDDR13 ^= 0x01);
 			setbTimer();
 		}
+		
 	}
 }
 
@@ -232,28 +234,31 @@ void printAt(long num, int pos) {
 }
 void button()
 {
-		int isPressed = 0;
-		long count = 0;
+//		int isPressed = 0;
+//		long count = 0;
 		while(1){
 		lock(&muteButton);
+/*
 		//"resets" the button when it has been pressed
 		if (((1 << PINB) == 0) && (isPressed == 1)){
 			isPressed = 0;
 		}
 		//if the segment is on, turn it off, if segment is off turn it on
 		if (((1 << PINB) == 1) && (isPressed == 0)){
-			count++;
+			count++;*/
 			printAt(count, 3);
-			}
-			isPressed = 1;
+			
+			
+			//isPressed = 1;
 	}
 }
 
 
 void computePrimes(int pos) {
 	long n;
-
+//	lock(&mutePrime);
 	for(n = 1; ; n++) {
+	
 		if (is_prime(n)) {
 			printAt(n, pos);
 		}
@@ -264,11 +269,14 @@ ISR(PCINT1_vect){
 	if ((1 << PINB) == 1){
 		count++;
 		unlock(&muteButton);
-		printAt(count, 3);
+//		printAt(count, 3);
 		yield();
 	}
 }
-
+ISR(TIMER1_COMPA_vect){
+	unlock(&muteBlink);
+	yield();
+}
 
 int main() {
 	LCD_Init();
@@ -277,8 +285,4 @@ int main() {
  	computePrimes(0);
 
 	
-}
-ISR(TIMER1_COMPA_vect){
-	unlock(&muteBlink);
-	yield();
 }

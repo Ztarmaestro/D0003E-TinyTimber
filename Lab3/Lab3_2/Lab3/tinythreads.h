@@ -20,7 +20,7 @@ struct mutex_block {
 };
 typedef struct mutex_block mutex;
 
-#define MUTEX_INIT {0,0}
+#define MUTEX_INIT {1,0}
 void lock(mutex *m);
 void unlock(mutex *m);
 
