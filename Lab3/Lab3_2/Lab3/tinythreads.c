@@ -132,13 +132,13 @@ void spawn(void (* function)(int), int arg) {
 void yield(void) 
 {
 	DISABLE();
-	if (readyQ != NULL){
+//	if (readyQ != NULL){
 		thread p = dequeue(&readyQ);
 		enqueue(current, &readyQ);
 		dispatch(p);
 		//dispatch(dequeue(&readyQ));
 		ENABLE();
-	}
+	//}
 }
 
 
