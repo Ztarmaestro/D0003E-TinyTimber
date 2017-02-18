@@ -228,7 +228,7 @@ void button(){
 
 void computePrimes(int pos) {
 	long n;
-//	lock(&mutePrime);
+
 	for(n = 1; ; n++) {
 	
 		if (is_prime(n)) {
