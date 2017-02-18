@@ -11,7 +11,7 @@ char reg1;
 char reg2;
 char reg3;
 char reg4;
-int count;
+long count;
 //int isPressed = 0;
 long prime = 2;
 
@@ -228,8 +228,9 @@ void button(){
 
 void computePrimes(int pos) {
 	long n;
-
+//	lock(&mutePrime);
 	for(n = 1; ; n++) {
+	
 		if (is_prime(n)) {
 			printAt(n, pos);
 		}

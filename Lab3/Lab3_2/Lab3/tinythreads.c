@@ -52,22 +52,12 @@ static void initialize(void) {
 	initialized = 1;
 }
 
-//getters and setters declared in tinytimber.h
-/*
-int getbTimer(void){
-	return blinkTimer; 
-}
-
-void setbTimer(void){
-	blinkTimer = 0;
-}*/
-
 static void enqueue(thread p, thread *queue) {
 
 	p->next = NULL;
-	if (*queue == NULL) {
+	if (*queue == NULL){
 		*queue = p;
-		} else {
+		}else{
 		thread q = *queue;
 		p->next = q;
 		*queue = p;
@@ -124,6 +114,7 @@ void yield(void)
 		dispatch(next);
 	} ENABLE();
 }
+
 
 void lock(mutex *m) {
 	DISABLE();
