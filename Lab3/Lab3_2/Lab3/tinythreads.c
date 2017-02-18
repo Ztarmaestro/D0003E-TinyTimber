@@ -1,7 +1,8 @@
 #include <setjmp.h>
 #include <avr/io.h>
-#include <avr/signal.h>
+
 #include "tinythreads.h"
+#include <avr/interrupt.h>
 
 #define NULL            0
 #define DISABLE()       cli()
@@ -11,8 +12,7 @@
 #define SETSTACK(buf,a) *((unsigned int *)(buf)+8) = (unsigned int)(a) + STACKSIZE - 4; \
                         *((unsigned int *)(buf)+9) = (unsigned int)(a) + STACKSIZE - 4
 
-
-static int blinkTimer = 0;
+//static int blinkTimer = 0;
 struct thread_block {
     void (*function)(int);   // code to run
     int arg;                 // argument to the above
@@ -30,64 +30,49 @@ thread readyQ  = NULL;
 thread current = &initp;
 
 int initialized = 0;
-
-
 	
 static void initialize(void) {
-		int i;
-		for (i=0; i<NTHREADS-1; i++)
-		threads[i].next = &threads[i+1];
-		threads[NTHREADS-1].next = NULL;
-		//External input
-		//EIMSK = (1 << PCIE1);
-		//PCMSK1 = (1 << PCINT15);
-		//activate the button
-		PORTB = (1 << PINB7);
-		//timer with prescaler 1024
-		TCCR1B = (1<<CS12) | (1 << CS10) | (1 << WGM12);
-		//500 ms period
-		OCR1A = 0xF42;
+	int i;
+	for (i=0; i<NTHREADS-1; i++)
+	threads[i].next = &threads[i+1];
+	threads[NTHREADS-1].next = NULL;
+	//External input
+	EIMSK = (1 << PCIE1);
+	PCMSK1 = (1 << PCINT15);
+	//activate the button
+	PORTB = (1 << PINB7);
+	//timer with prescaler 1024
+	TCCR1B = (1<<CS12) | (1 << CS10) | (1 << WGM12);
+	//500 ms period
+	OCR1A = 0xF42;
 
-		TIMSK1 = (1 << OCIE1A);
-		//reset timer
-		TCNT1 = 0;
-		initialized = 1;
-	}
-
+	TIMSK1 = (1 << OCIE1A);
+	//reset timer
+	TCNT1 = 0;
+	initialized = 1;
+}
 
 //getters and setters declared in tinytimber.h
+/*
 int getbTimer(void){
 	return blinkTimer; 
 }
 
 void setbTimer(void){
 	blinkTimer = 0;
-}
+}*/
 
 static void enqueue(thread p, thread *queue) {
+
 	p->next = NULL;
 	if (*queue == NULL) {
 		*queue = p;
 		} else {
 		thread q = *queue;
-		while (q->next)
-		q = q->next;
-		q->next = p;
+		p->next = q;
+		*queue = p;
 	}
 }
-
-/*
-static void enqueue(thread p, thread *queue) {
-    p->next = NULL;
-    if (*queue == NULL) {
-        *queue = p;
-    } else {
-        thread q = *queue;
-        while (q->next)
-            q = q->next;
-        q->next = p;
-    }
-}*/
 
 static thread dequeue(thread *queue) {
     thread p = *queue;
@@ -133,9 +118,11 @@ void spawn(void (* function)(int), int arg) {
 void yield(void) 
 {
 	DISABLE();	
-	enqueue(current, &readyQ);
-	dispatch(dequeue(&readyQ));
-	ENABLE();
+	if(readyQ != NULL){
+		thread next = dequeue(&readyQ);
+		enqueue(current, &readyQ);
+		dispatch(next);
+	} ENABLE();
 }
 
 void lock(mutex *m) {
@@ -144,8 +131,9 @@ void lock(mutex *m) {
 		m->locked = 1;
 	}
 	else{
+		thread next = dequeue(&readyQ);
 		enqueue(current, &(m->waitQ));
-		dispatch(dequeue(&readyQ));
+		dispatch(next);
 	}
 	ENABLE();
 }
@@ -153,14 +141,12 @@ void lock(mutex *m) {
 void unlock(mutex *m) {
 	DISABLE();
 	if(m->waitQ != 0){
+		thread next = dequeue(&(m->waitQ));
 		enqueue(current, &readyQ);
-		dispatch(dequeue(&(m->waitQ)));
+		dispatch(next);
 	}
 	else{
 		m->locked = 0;
 	}
 	ENABLE();
 }
-
-
-

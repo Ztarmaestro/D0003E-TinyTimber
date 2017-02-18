@@ -11,11 +11,11 @@ char reg1;
 char reg2;
 char reg3;
 char reg4;
-
+int count;
 //int isPressed = 0;
 long prime = 2;
+long counter = 0;
 
-//mutex mute = MUTEX_INIT;
 //settings for avr
 void LCD_Init(void)
 {
@@ -32,8 +32,6 @@ void LCD_Init(void)
 	LCDCCR = (1 << LCDCC0) | (1 << LCDCC1) | (1 << LCDCC2) | (1 << LCDCC3);
 	//timer with prescaler 256
 	//TCCR1B = (1<<CS12);
-	//button setting
-	PORTB = (1 << PINB7);
 
 }
 //cases for number 0-9
@@ -167,7 +165,6 @@ void writeChar(char ch, int pos)
 	casePosition(pos);
 	
 }
-
 void writeLong(long i)
 {
 	char c;
@@ -194,7 +191,6 @@ long is_prime(long i)
 	}
 	return 1;
 }
-
 void primes()
 {
 	long i = 25000;
@@ -203,19 +199,9 @@ void primes()
 	}
 	i++;
 }
-
 void blink()
 {
-		//unsigned int timer1 = 0x3D08;
-		//xoring the register and then resets TCNT1
-		while(1){
-		if (getbTimer() >= 10){
-		//if (blinkTimer == 1){
-			(LCDDR13 ^= 0x01);
-			setbTimer();
-		}
-	}
-
+		LCDDR13 ^= 0x01;
 }
 
 void printAt(long num, int pos) {
@@ -225,25 +211,13 @@ void printAt(long num, int pos) {
 	pp++;
 	writeChar( num % 10 + '0', pp);
 	//unlock(&mute);
-//	yield();
+	//yield();
 }
-void button()
-{
-	int isPressed = 0;
-	long count = 0;
-	while(1){
-		//"resets" the button when it has been pressed
-		if (((1 << PINB) == 0) && (isPressed == 1)){
-			isPressed = 0;
-		}
-		//if the segment is on, turn it off, if segment is off turn it on
-		if (((1 << PINB) == 1) && (isPressed == 0)){
-			count++;
-			printAt(count, 3);
-			}
-			isPressed = 1;
-		}
-	
+
+void button(){
+
+		printAt(counter, 3);
+		counter++;
 }
 
 void computePrimes(int pos) {
@@ -256,21 +230,22 @@ void computePrimes(int pos) {
 	}
 }
 
-/*
 ISR(PCINT1_vect){
 	if ((1 << PINB) == 1){
-		count++;
-		printAt(count, 3);
+		spawn(button,1);
 		yield();
 	}
-}*/
+}
 
+ISR(TIMER1_COMPA_vect){
+	spawn(blink,1);
+	yield();
+}
 
 int main() {
 	LCD_Init();
+	
 	spawn(button, 0);
 	spawn(blink, 0);
- 	computePrimes(0);
-
-	
+	computePrimes(0);	
 }

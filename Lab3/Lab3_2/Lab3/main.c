@@ -17,6 +17,7 @@ long prime = 2;
 
 mutex muteButton = MUTEX_INIT;
 mutex muteBlink = MUTEX_INIT;
+
 //settings for avr
 void LCD_Init(void)
 {
@@ -33,8 +34,6 @@ void LCD_Init(void)
 	LCDCCR = (1 << LCDCC0) | (1 << LCDCC1) | (1 << LCDCC2) | (1 << LCDCC3);
 	//timer with prescaler 256
 	//TCCR1B = (1<<CS12);
-	//button setting
-	PORTB = (1 << PINB7);
 
 }
 //cases for number 0-9
@@ -153,10 +152,7 @@ void casePosition(int pos)
 		LCDDR12 = (LCDDR12 & 0x0F) | reg3 << 4;
 		LCDDR17 = (LCDDR17 & 0x0F) | reg4 << 4;
 		break;
-
 		
-		
-
 	}
 }
 
@@ -168,7 +164,6 @@ void writeChar(char ch, int pos)
 	casePosition(pos);
 	
 }
-
 void writeLong(long i)
 {
 	char c;
@@ -195,7 +190,6 @@ long is_prime(long i)
 	}
 	return 1;
 }
-
 void primes()
 {
 	long i = 25000;
@@ -204,22 +198,14 @@ void primes()
 	}
 	i++;
 }
-
 void blink()
 {
-		//unsigned int timer1 = 0x3D08;
-		//xoring the register and then resets TCNT1
-		while(1){
+	//xoring the register and then resets TCNT1
+	while(1){
 		lock(&muteBlink);
-		if (getbTimer() >= 10){
-		//if (blinkTimer == 1){
-			(LCDDR13 ^= 0x01);
-			setbTimer();
-		}
+		LCDDR13 ^= 0x01;
 	}
 }
-
-
 
 void printAt(long num, int pos) {
 	//lock(&mute);
@@ -228,27 +214,17 @@ void printAt(long num, int pos) {
 	pp++;
 	writeChar( num % 10 + '0', pp);
 	//unlock(&mute);
-//	yield();
-}
-void button()
-{
-		int isPressed = 0;
-		long count = 0;
-		while(1){
-		lock(&muteButton);
-		//"resets" the button when it has been pressed
-		if (((1 << PINB) == 0) && (isPressed == 1)){
-			isPressed = 0;
-		}
-		//if the segment is on, turn it off, if segment is off turn it on
-		if (((1 << PINB) == 1) && (isPressed == 0)){
-			count++;
-			printAt(count, 3);
-			}
-			isPressed = 1;
-	}
+	//yield();
 }
 
+void button(){
+	long counter = 0;
+	while(1){
+		printAt(counter, 3);
+		lock(&muteButton);
+		counter++;
+	}
+}
 
 void computePrimes(int pos) {
 	long n;
@@ -262,23 +238,22 @@ void computePrimes(int pos) {
 
 ISR(PCINT1_vect){
 	if ((1 << PINB) == 1){
-		count++;
 		unlock(&muteButton);
-		printAt(count, 3);
 		yield();
 	}
 }
 
-
-int main() {
-	LCD_Init();
-	spawn(button, 0);
-	spawn(blink, 0);
- 	computePrimes(0);
-
-	
-}
 ISR(TIMER1_COMPA_vect){
 	unlock(&muteBlink);
 	yield();
+}
+
+int main() {
+	LCD_Init();
+	
+	spawn(button, 0);
+	yield();
+	spawn(blink, 0);
+	yield();
+	computePrimes(0);	
 }
