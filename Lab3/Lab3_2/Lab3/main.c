@@ -240,13 +240,11 @@ void computePrimes(int pos) {
 ISR(PCINT1_vect){
 	if ((1 << PINB) == 1){
 		unlock(&muteButton);
-		yield();
 	}
 }
 
 ISR(TIMER1_COMPA_vect){
 	unlock(&muteBlink);
-	yield();
 }
 
 int main() {

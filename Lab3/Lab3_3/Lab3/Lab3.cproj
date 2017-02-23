@@ -27,7 +27,7 @@
     <BootSegment>2</BootSegment>
     <eraseonlaunchrule>0</eraseonlaunchrule>
     <avrtool>com.atmel.avrdbg.tool.ispmk2</avrtool>
-    <avrtoolserialnumber>000200180544</avrtoolserialnumber>
+    <avrtoolserialnumber>000200144299</avrtoolserialnumber>
     <avrdeviceexpectedsignature>0x1E9405</avrdeviceexpectedsignature>
     <avrtoolinterface>ISP</avrtoolinterface>
     <avrtoolinterfaceclock>125000</avrtoolinterfaceclock>
@@ -39,20 +39,20 @@
         <InterfaceName>ISP</InterfaceName>
       </ToolOptions>
       <ToolType>com.atmel.avrdbg.tool.ispmk2</ToolType>
-      <ToolNumber>000200180544</ToolNumber>
+      <ToolNumber>000200144299</ToolNumber>
       <ToolName>AVRISP mkII</ToolName>
     </com_atmel_avrdbg_tool_ispmk2>
     <AsfFrameworkConfig>
       <framework-data xmlns="">
-  <options />
-  <configurations />
-  <files />
-  <documentation help="" />
-  <offline-documentation help="" />
-  <dependencies>
-    <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.32.0" />
-  </dependencies>
-</framework-data>
+        <options />
+        <configurations />
+        <files />
+        <documentation help="" />
+        <offline-documentation help="" />
+        <dependencies>
+          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.32.0" />
+        </dependencies>
+      </framework-data>
     </AsfFrameworkConfig>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
