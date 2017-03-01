@@ -22,10 +22,10 @@
 	 //activate the button
 	 PORTB = (1 << PINB7);
 	 //timer with prescaler 1024
-	 TCCR1B = (1<<CS12) | (1 << CS10) | (1 << WGM12);
+	 //TCCR1B = (1<<CS12) | (1 << CS10) | (1 << WGM12);
 	 //500 ms period
-	 OCR1A = 0xF42;
+	 //OCR1A = 0xF42;
 
-	 TIMSK1 = (1 << OCIE1A);
+	 //TIMSK1 = (1 << OCIE1A);
 	 //reset timer
  }

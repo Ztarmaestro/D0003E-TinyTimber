@@ -9,8 +9,14 @@
 #ifndef GUI_H_
 #define GUI_H_
 
+typedef struct{
+	Object super;
+	int leftvalue;
+	int rightvalue;
 
+}GUI;
 
+#define initGUI(leftvalue, rightvalue){initObject(), leftvalue, rightvalue}
 
 
 #endif /* GUI_H_ */
