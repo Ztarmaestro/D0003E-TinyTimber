@@ -6,7 +6,11 @@ GUI.c
 
 init.c
 
+joystick.c
+
 main.c
+
+pulse.c
 
 TinyTimber.c
 

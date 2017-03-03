@@ -1,3 +1,4 @@
+#include <avr/io.h>
 
  void LCD_Init(void)
  {
@@ -17,15 +18,11 @@
 
 
 	 //External input
-	 EIMSK = (1 << PCIE1);
-	 PCMSK1 = (1 << PCINT15);
+	 EIMSK = (1 << PCIE1) | (1 << PCIE1);
+	 PCMSK1 = (1 << PCINT15) | (1 << PCINT14) | (1 << PCINT12);
+	 PCMSK0 = (1 << PCINT2) | (1 << PCINT3);
 	 //activate the button
-	 PORTB = (1 << PINB7);
-	 //timer with prescaler 1024
-	 //TCCR1B = (1<<CS12) | (1 << CS10) | (1 << WGM12);
-	 //500 ms period
-	 //OCR1A = 0xF42;
+	 PORTB = (1 << PINB7) | (1 << PINB6) | (1 << PINB4);
+	 PORTE = (1 << PINE2) | (1 << PINE3) | (1 << PINE4) | (1 << PINE6);
 
-	 //TIMSK1 = (1 << OCIE1A);
-	 //reset timer
  }

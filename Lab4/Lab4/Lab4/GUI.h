@@ -1,10 +1,4 @@
-/*
- * GUI.h
- *
- * Created: 2017-02-28 13:17:23
- *  Author: jespe
- */ 
-
+#include "TinyTimber.h"
 
 #ifndef GUI_H_
 #define GUI_H_
@@ -18,5 +12,7 @@ typedef struct{
 
 #define initGUI(leftvalue, rightvalue){initObject(), leftvalue, rightvalue}
 
+void writeChar(char ch, int pos);
+void printAt(long num, int pos);
 
 #endif /* GUI_H_ */

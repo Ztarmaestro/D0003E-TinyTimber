@@ -9,7 +9,7 @@
 #ifndef INIT_H_
 #define INIT_H_
 
-
+void LCD_Init(void);
 
 
 

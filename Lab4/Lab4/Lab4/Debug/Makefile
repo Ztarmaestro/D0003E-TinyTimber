@@ -39,7 +39,9 @@ SUBDIRS :=
 C_SRCS +=  \
 ../GUI.c \
 ../init.c \
+../joystick.c \
 ../main.c \
+../pulse.c \
 ../TinyTimber.c
 
 
@@ -52,25 +54,33 @@ ASM_SRCS +=
 OBJS +=  \
 GUI.o \
 init.o \
+joystick.o \
 main.o \
+pulse.o \
 TinyTimber.o
 
 OBJS_AS_ARGS +=  \
 GUI.o \
 init.o \
+joystick.o \
 main.o \
+pulse.o \
 TinyTimber.o
 
 C_DEPS +=  \
 GUI.d \
 init.d \
+joystick.d \
 main.d \
+pulse.d \
 TinyTimber.d
 
 C_DEPS_AS_ARGS +=  \
 GUI.d \
 init.d \
+joystick.d \
 main.d \
+pulse.d \
 TinyTimber.d
 
 OUTPUT_FILE_PATH +=Lab4.elf
@@ -87,6 +97,10 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
+
+
 
 
 
