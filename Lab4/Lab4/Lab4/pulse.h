@@ -25,4 +25,6 @@ typedef struct{
 void increaseFreq(Pulse *self, int arg);
 void decreaseFreq(Pulse *self, int arg);
 void memoryFreq(Pulse *self, int arg);
+void switchRightPulse(Joystick *self, int arg)
+void switchLeftPulse(Joystick *self, int arg)
 #endif /* PULSE_H_ */

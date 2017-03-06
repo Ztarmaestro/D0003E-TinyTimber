@@ -1,7 +1,7 @@
 #include "pulse.h"
 #include "TinyTimber.h"
 #include <avr/io.h>
-
+#include "joystick.h"
 void increaseFreq(Pulse *self, int arg){
 	if (self->freq <= 98){
 		self->freq = self->freq+1;
@@ -26,14 +26,14 @@ void memoryFreq(Pulse *self, int arg){
 		
 	}
 }
-void switchLeftPulse(Pulse *self, int arg){
-	if(self->position == 4){
-		self->position = 0;
+void switchLeftPulse(Joystick *self, int arg){
+	if(self->current->position == 4){
+		self->current = self->Pulse1;
 	}
 
 }
-void switchRightPulse(Pulse *self, int arg){
-	if(self->position == 0){
-		self->position = 4;
+void switchRightPulse(Joystick *self, int arg){
+	if(self->current->position == 0){
+		self->current = self->Pulse2;
 	}
 }
