@@ -10,7 +10,8 @@ joystick.d joystick.o: .././joystick.c .././joystick.h .././TinyTimber.h \
  d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\common.h \
  d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\version.h \
  d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\fuse.h \
- d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h
+ d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h \
+ .././main.h
 
 .././joystick.h:
 
@@ -41,3 +42,5 @@ d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\version.h:
 d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\fuse.h:
 
 d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h:
+
+.././main.h:

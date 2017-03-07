@@ -1,4 +1,5 @@
 pulse.d pulse.o: .././pulse.c .././pulse.h .././TinyTimber.h .././GUI.h \
+ .././joystick.h \
  d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h \
  d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\sfr_defs.h \
  d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\inttypes.h \
@@ -16,6 +17,8 @@ pulse.d pulse.o: .././pulse.c .././pulse.h .././TinyTimber.h .././GUI.h \
 .././TinyTimber.h:
 
 .././GUI.h:
+
+.././joystick.h:
 
 d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h:
 

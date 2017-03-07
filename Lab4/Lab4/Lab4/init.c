@@ -14,13 +14,14 @@
 	 //Drive time 300ms, control voltage 3,35V
 	 LCDCCR = (1 << LCDCC0) | (1 << LCDCC1) | (1 << LCDCC2) | (1 << LCDCC3);
 	 //timer with prescaler 256
-	 //TCCR1B = (1<<CS12);
+	// TCCR1B = (1<<CS12);
 
 
 	 //External input
-	 EIMSK = (1 << PCIE1) | (1 << PCIE1);
+	 EIMSK = (1 << PCIE1) | (1 << PCIE0);
 	 PCMSK1 = (1 << PCINT15) | (1 << PCINT14) | (1 << PCINT12);
 	 PCMSK0 = (1 << PCINT2) | (1 << PCINT3);
+	// EIFR = 0xC0;
 	 //activate the button
 	 PORTB = (1 << PINB7) | (1 << PINB6) | (1 << PINB4);
 	 PORTE = (1 << PINE2) | (1 << PINE3) | (1 << PINE4) | (1 << PINE6);

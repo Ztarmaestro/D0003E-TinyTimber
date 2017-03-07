@@ -5,6 +5,8 @@
 #include <unistd.h>
 #include <avr/interrupt.h>
 #include "GUI.h"
+#include "pulse.h"
+#include "joystick.h"
 
 /*
  //cases for number 0-9
@@ -252,3 +254,5 @@
 	 writeChar( num % 10 + '0', pp);
 
  }
+
+

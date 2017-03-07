@@ -10,7 +10,7 @@ main.d main.o: .././main.c \
  d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\version.h \
  d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\fuse.h \
  d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h \
- .././GUI.h .././TinyTimber.h .././pulse.h .././joystick.h .././init.h \
+ .././GUI.h .././TinyTimber.h .././joystick.h .././pulse.h .././init.h \
  d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\interrupt.h
 
 d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h:
@@ -39,9 +39,9 @@ d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h:
 
 .././TinyTimber.h:
 
-.././pulse.h:
-
 .././joystick.h:
+
+.././pulse.h:
 
 .././init.h:
 

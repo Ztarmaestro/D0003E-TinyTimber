@@ -17,7 +17,7 @@ GUI.d GUI.o: .././GUI.c \
  d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\unistd.h \
  d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\sys\types.h \
  d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\interrupt.h \
- .././GUI.h .././TinyTimber.h
+ .././GUI.h .././TinyTimber.h .././joystick.h .././pulse.h
 
 d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h:
 
@@ -58,3 +58,7 @@ d:\atmelstudios\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\interrupt.
 .././GUI.h:
 
 .././TinyTimber.h:
+
+.././joystick.h:
+
+.././pulse.h:

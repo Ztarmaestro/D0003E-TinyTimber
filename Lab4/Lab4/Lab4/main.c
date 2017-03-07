@@ -20,10 +20,8 @@ Pulse pulse2 = initPulse(0,4,0,0,&gui);
 Joystick joy = initJoystick(&pulse1, &pulse2, &pulse1);
 
 
-void updateLCD(Joystick *self, int arg){
-	printAt(self->Pulse1->freq, self->Pulse1->position);
-	printAt(self->Pulse2->freq, self->Pulse2->position);
-	ASYNC(self, updateLCD, 0);
+void start(Joystick *self, int arg){
+	ASYNC(self ,updateLCD, 0);
 }
 
 int main(void)
@@ -32,7 +30,7 @@ int main(void)
 	LCD_Init();
 	INSTALL(&joy, pinEdoSOMETHING ,IRQ_PCINT0);
 	INSTALL(&joy, pinBdoSOMETHING ,IRQ_PCINT1);
-	return TINYTIMBER(&joy,updateLCD,0);
+	return TINYTIMBER(&joy,start,0);
    
    /* TINYTIMBER( T *obj, int (*meth)(T*,A), A arg ); */
 
