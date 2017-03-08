@@ -18,10 +18,11 @@ typedef struct{
 	int position;
 	int memory;
 	int memFlag;
+	int freqDisplayFlag;
 	GUI *GUI;
 }Pulse;
 
-#define initPulse(freq, position, memory,memFlag, GUI){initObject(), freq, position, memory, memFlag, GUI}
+#define initPulse(freq, position, memory, memFlag, freqDisplayFlag, GUI){initObject(), freq, position, memory, memFlag, freqDisplayFlag, GUI}
 
 void increaseFreq(Pulse *self, int arg);
 void decreaseFreq(Pulse *self, int arg);

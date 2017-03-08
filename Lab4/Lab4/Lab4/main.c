@@ -14,8 +14,8 @@
 #include <avr/interrupt.h>
 
 GUI gui = initGUI(0,0);
-Pulse pulse1 = initPulse(0,0,0,0,&gui);
-Pulse pulse2 = initPulse(0,4,0,0,&gui);
+Pulse pulse1 = initPulse(0,0,0,0,0,&gui);
+Pulse pulse2 = initPulse(0,4,0,0,0,&gui);
 
 Joystick joy = initJoystick(&pulse1, &pulse2, &pulse1);
 
@@ -28,6 +28,7 @@ int main(void)
 {
 	sei();
 	LCD_Init();
+	LCDDR13 = 0xF;
 	INSTALL(&joy, pinEdoSOMETHING ,IRQ_PCINT0);
 	INSTALL(&joy, pinBdoSOMETHING ,IRQ_PCINT1);
 	return TINYTIMBER(&joy,start,0);

@@ -15,11 +15,9 @@ void decreaseFreq(Pulse *self, int arg){
 	}
 }
 
-
-
 void memoryFreq(Pulse *self, int arg){
 	
-	if ((self->freq != 0) && (self->memFlag == 0)){
+	if (self->memFlag == 0){
 		self->memory = self->freq;
 		self->freq = 0;
 		self->memFlag = 1;

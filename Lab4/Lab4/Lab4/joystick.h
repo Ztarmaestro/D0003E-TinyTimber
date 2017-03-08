@@ -16,5 +16,6 @@ void pinBdoSOMETHING(Joystick *self, int arg);
 void pinEdoSOMETHING(Joystick *self, int arg);
 void scroll(Joystick *self, int arg);
 void updateLCD(Joystick *self, int arg);
+void freqDisplay(Joystick *self, int arg);
 
 #endif /* JOYSTICK_H_ */
