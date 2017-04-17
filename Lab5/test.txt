@@ -1,0 +1,166 @@
+#include <errno.h>      // Error number definitions
+#include <stdint.h>     // C99 fixed data types
+#include <stdio.h>      // Standard input/output definitions
+#include <stdlib.h>     // C standard library
+#include <string.h>     // String function definitions
+#include <unistd.h>     // UNIX standard function definitions
+#include <fcntl.h>      // File control definitions
+#include <termios.h>    // POSIX terminal control definitions
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <pthread.h>		//threads functionality
+#include <semaphore.h>
+
+
+int PortFile;
+// GUI garbage
+
+int NQ=0;
+int SQ=0;
+int NG=0;
+int NR=0;
+int SG=0;
+int SR=0;
+
+
+
+pthread_t TrafThread;
+pthread_t LightThread;
+pthread_t GUIThread;
+sem_t GuiSem;
+
+char *arg  = 0;
+int mutex = 0;
+
+
+void *TrafLight(void *arg);
+//void *CarArrival(void *arg);
+//void Com_Init();
+void *aLight(void *arg);
+
+void *GUI(void *arg);
+
+void Com_Init(){
+	struct termios Options;
+	/*Enable r/w not controlling terminal no delay on read*/
+	PortFile = open("/dev/ttyS0", O_RDWR| O_NOCTTY);
+	if(PortFile == -1){
+		printf("Path Error");
+	}	 
+	/* Get default for port */
+	tcgetattr(PortFile, &Options);
+	/*Set baud rate in and out*/
+	cfsetispeed(&Options, B9600);
+	cfsetospeed(&Options, B9600);
+	/* 8 char enable recieve baud 9600, local*/
+	Options.c_cflag = CS8 | B9600 | CREAD | CLOCAL;
+	/* Feedback loop "error" disabled */
+	Options.c_lflag &=~(ICANON | ECHO) ;
+	/* wait untill atleast one char recieved */
+	Options.c_cc[VMIN] = 1;
+	/* wait 10 sec first char read */
+	//Options.c_cc[VTIME] = 0;
+	/* set new settings */
+	tcsetattr(PortFile,TCSANOW,&Options);
+	tcflush(PortFile, TCIFLUSH);
+	//printf("Hello from Com_Init!\n");
+	
+}
+
+void bWrite(uint8_t b){
+	//printf("Writing...\n");
+	mutex =1;
+	write(PortFile,&b, 1);
+	mutex = 0;
+	sem_post(&GuiSem);
+}
+
+
+
+
+void *TrafLight(void *arg){
+	//printf("Hello from TrafLight!\n");
+	/* Bitmasking not needed since we know values*/
+	while(1){
+		//printf("im alive \n");
+		//printf("%d NORTH\n %d SOUTH\n", NQ, SQ);
+		/*Base case both red*/
+		uint8_t Signal;
+		read(PortFile, &Signal, 1);
+		if(Signal == 0xA){
+			//both red 
+			//printf("Both red achieved!\n");
+			NG = 0;
+			SG = 0;
+
+		}		
+		if(Signal == 0x9){
+			//North Green South Red
+			//printf("North GREEN \n");
+			NQ -=1;
+			bWrite(0x2);
+			NG = 1;
+			SG = 0;
+		}
+		if(Signal == 0x6){
+			//South Green North Red
+			//printf("SOUTH GREEN \n");
+			SQ-=1;
+			bWrite(0x8);
+			NG = 0;
+			SG = 1;
+		}
+		
+	}
+}
+
+
+
+void CarArrival(void *a){
+	//printf("Hello from CarArrival!\n");
+		while(1){
+	uint8_t KeyIn = getchar();
+		if (KeyIn=='s'){
+			SQ+=1;
+			bWrite(0x4);
+			//printf("South Car Queued\n");
+		}
+		else if(KeyIn == 'n'){
+			NQ+=1;
+			bWrite(0x1);
+			//printf("North Car Queued\n");
+		}
+		
+		//flush after or not 
+	}
+	 
+}
+
+
+void *GUI(void *arg){
+	while(1){
+		sem_wait(&GuiSem);
+		mutex = 1;
+		printf("\e[1;1H\e[2J");
+		printf("%d		SIGNALS		%d\n",NG,SG);
+		printf("%d		<-N,S->		%d\n",NQ,SQ);
+		mutex = 0;
+	}
+}
+
+
+
+
+main(){
+	Com_Init();
+	pthread_create(&TrafThread, NULL, TrafLight, &arg);
+	pthread_create(&GUIThread,NULL,GUI, &arg);
+	sem_init(&GuiSem, 0, 0);
+	
+	CarArrival(NULL);
+
+}	
+
+
+

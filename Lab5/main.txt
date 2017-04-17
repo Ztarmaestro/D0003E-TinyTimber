@@ -1,0 +1,231 @@
+/*
+ * LABORATION5.c
+ *
+ * Created: 2017-03-16 17:27:37
+ * Author : shasal-5
+ */ 
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include "TinyTimber.h"
+#include "MASK.h"
+
+
+
+
+
+
+typedef struct{
+	Object super;
+	int NorthQ;
+	int SouthQ;
+	int Turn;
+	Timer t;
+}QUEUE;
+	
+typedef struct{
+	Object super;
+	QUEUE *VAL;
+	int pos1;
+	int pos2;
+}GUI;
+
+
+typedef struct{
+	Object super;
+	QUEUE *QVAL;
+	uint8_t Input;
+}USART;
+	
+
+
+
+#define BRC1 51
+#define INIT_QUEUE(NorthQ, SouthQ, Turn){initObject(),NorthQ, SouthQ,Turn, initTimer()}
+#define INIT_GUI(VAL, pos1, pos2){initObject(),VAL, pos1, pos2,}
+#define INIT_USART(QVAL,Input){initObject(),QVAL, Input,}
+
+
+static QUEUE Que = INIT_QUEUE(0,0,0);
+static GUI G = INIT_GUI(&Que, 0, 3);
+static uint16_t marghareth[10] = {0x1551, 0x0110, 0x1E11, 0x1B11, 0x0B50, 0x1B41, 0x1F41, 0x0111, 0x1F51, 0x1B51};
+static USART U = INIT_USART(&Que,0);
+
+
+void LCD_INIT(void){
+	/*LCD ENABLE; LOW POWER WAVEFORM*/
+	LCDCRA = (1<<LCDEN) | (1<<LCDAB); 
+	/*ASYNC CLOCK; 1/4 duty; 1/3 bias; 25 segments */
+	LCDCRB = (1<<LCDCS) | (1<<LCDMUX1) | (1<<LCDMUX0) | (1<<LCDPM2)| (1<<LCDPM1)| (1<<LCDPM0);
+	/*Clock N=16 D = 8*/
+	LCDFRR = (1<<LCDCD2) |(1<<LCDCD1) |(1<<LCDCD0);
+	/*Drivetime 300 3.35 volt */
+	LCDCCR = (1<<LCDCC3) |(1<<LCDCC2) |(1<<LCDCC1) |(1<<LCDCC0);
+}
+
+void USART_INIT(void){
+	/* set baud rate */
+	
+	UBRR0H = (BRC1>>8);
+	UBRR0L = BRC1;
+	/* Enable Reciever & Transmitter; Enable interrupt on clear transmit buffer*/
+	UCSR0B = (1<<RXEN0) | (1<<TXEN0) | (1<<TXCIE0) | (1<<RXCIE0);
+	/* Set Character size 8, One stop bit*/
+	UCSR0C = (1<<UCSZ00) | (1<<UCSZ01);
+	
+}
+
+
+
+void writeChar(char ch, int pos){
+	if(pos>=0 && pos<=5){
+		uint8_t sam = (uint8_t)ch-48;
+		uint8_t fred = 0x00;
+		uint8_t mask = 0xF0; //we need to clear the nibble b4 writing 2 it
+		if(pos%2 != 0){
+			fred = 0x04;
+			mask = 0x0F;
+		}
+		uint8_t *george = &LCDDR0;
+		george += pos/2;
+		*george &= mask;
+		*george  |= ((marghareth[sam] & MASK_0)<<fred);
+		george += 0x5;
+		*george &= mask;
+		*george  |= (((marghareth[sam] & MASK_1)>>0x4)<<fred);
+		george += 0x5;
+		*george &= mask;
+		*george  |= (((marghareth[sam] & MASK_2)>>0x8)<<fred);
+		george += 0x5;
+		*george &= mask;
+		*george  |= (((marghareth[sam] & MASK_3)>>0xC)<<fred);
+	}
+}
+
+void printAt(int num, int pos) {
+	int pp = pos;
+	pp = pos;
+	writeChar( (num % 100) / 10 + '0', pp);
+	pp++;
+	writeChar( num % 10 + '0', pp);
+}
+
+
+
+void USART_Transmit(USART *Self, uint8_t Data){
+	//Just realised how dumb input is as a name Update: Just realised why its called input, since its not output.
+	//Self->Input = Data;
+	UDR0 = Data;
+	//LCDDR3 ^=1;
+	
+}
+void Tiny_install(GUI *self){
+	printAt(self->VAL->NorthQ, self->pos1);
+	printAt(self->VAL->SouthQ,self->pos2);
+}
+
+
+
+void NewJarvis(QUEUE *Self, uint8_t input){
+	if(input == 0x1){
+		Self->NorthQ +=1;
+		ASYNC(&G,Tiny_install,0);
+	}
+	else if(input== 0x2){
+		Self->NorthQ -=1;
+		ASYNC(&G,Tiny_install,0);
+	}
+	else if(input== 0x4){
+		Self->SouthQ +=1;
+		ASYNC(&G,Tiny_install,0);
+	}
+	else if(input==0x8){
+		Self->SouthQ -=1;
+		ASYNC(&G,Tiny_install,0);
+	}
+}
+
+
+
+
+
+/// ORIGINAL SHET
+void Tony_Stark(QUEUE *Self, int arg)
+{
+	
+	LCDDR13 ^=1;
+	if((Self->SouthQ == 0)&& (Self->NorthQ == 0)){
+		//Both Red
+		ASYNC(&U,USART_Transmit,0xA); 
+		AFTER(SEC(1),Self,Tony_Stark,0);
+		LCDDR18 ^=1;
+	}
+	/* Run for 10 cars while ur turn then switch and wait 5 seconds
+	Also Turn is a dumb name just think of it as counter */
+	else if ((Self->SouthQ > 0)||(Self->NorthQ > 0)){
+		if(arg == 0){
+			if((Self->Turn <= 10) && (Self->SouthQ > 0)){
+				ASYNC(&U,USART_Transmit,0x6); // South Green
+				if((Self->NorthQ)>0){
+					Self->Turn +=1;	
+				}
+				//Self->Turn +=1;
+				AFTER(SEC(1),Self,Tony_Stark,0);
+			}
+			//If south == 0 call urself with and set arg to 1
+			
+			else{
+				Self->Turn = 0;
+				arg = 1;
+				ASYNC(&U,USART_Transmit,0xA); 
+				AFTER(SEC(5),Self,Tony_Stark,arg);	
+			}
+		}	
+		else if(arg==1){
+			if((Self->Turn <=10) && (Self->NorthQ > 0)){ 
+				ASYNC(&U,USART_Transmit,0x9); //North Green
+				if((Self->SouthQ)>0){
+					Self->Turn +=1;
+				}
+				//Self->Turn +=1;
+				AFTER(SEC(1),Self,Tony_Stark,1);
+			}
+			else{
+				Self->Turn = 0;
+				arg = 0;
+				ASYNC(&U,USART_Transmit,0xA); 
+				AFTER(SEC(5),Self,Tony_Stark,arg);
+			}
+		}
+	}
+}
+
+
+
+
+void USART_Recieve(USART *Self){
+	Self->Input = UDR0;
+	uint8_t input = Self->Input; //lol
+	ASYNC(&Que,NewJarvis,input);
+}
+
+void init (USART *Self, int arg){
+	//both red
+	LCDDR8^=1;
+	UDR0 = 0xA;
+	ASYNC(&Que,Tony_Stark,0);
+}
+
+
+int main(void)
+{
+	CLKPR = 0x80;
+	CLKPR = 0x00;
+	LCD_INIT();
+	USART_INIT();
+	INSTALL(&U, USART_Recieve, IRQ_USART0_RX);
+	sei();	
+	return TINYTIMBER(&U,init,0);
+	
+	
+}
+
