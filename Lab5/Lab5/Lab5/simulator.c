@@ -29,6 +29,8 @@ int comfile;
 
 int mutex = 0;
 
+void *GUI(void *arg);
+
 void initCom1(){
 	Struct termios Options;
 	comfile = open("/dev/ttyS0", O_RDWR |O_NOCTTY);
@@ -57,53 +59,66 @@ void comfileWrite(uint8_t c){
 	
 }
 
-void lights(){
-	while (){
+void lights(void *arg){
+	while (1){
 		uint8_t filebuffer;
 		read(comfile, &filebuffer, 1);
-		if (filebuffer ==){
+		if (filebuffer == 0xA){
 			//If both lights are red!
 			northLightG = 0;
 			southLightG = 0;
 		}
-		if (filebuffer ==){
+		if (filebuffer == 0x9){
 			//If northLight is green and southLight is red 
 			northQ -= 1;
-			comfileWrite(/**/);
+			comfileWrite(0x2);
 			northLightG = 0;
 			southLightG = 0;
 		}
-		if (filebuffer ==){
+		if (filebuffer == 0x6){
+			//If southLight is green and northLight is red
 			southQ -= 1
-			comfileWrite(/**/);
+			comfileWrite(0x8);
 			northLightG = 0;
 			southLightG = 0;
 		}
 	}
 }
 
-void cars(){
+void cars(void *a){
 	while(1){
 		uint8_t keyPressed = getChar();
 		if (keyPressed == "s"){
 			southQ +=1;
 			//Add 1 to south Q
-			comfileWrite(/**/);
+			comfileWrite(0x4);
 			//Write out a car on screen
 		} else if (keyPressed == "n"){
 			northQ +=1;
 			//Add 1 to north Q
-			comfileWrite(/**/);
+			comfileWrite(0x1);
 			//Write out a car on screen
 		}
 	}
 }
 
 void *GUI(void *arg){
-	while (){
+	while (1){
+		//run sem on gui
+		
+		//GUI ART
+		mutex = 1;
+		printf("");
+		printf("");
+		printf("");
+		mutex = 0;		
 	}
 }
 
 void main(){
 	initCom1();
+	
+	//Start treads & init sem
+	
+	cars(NULL);
 }

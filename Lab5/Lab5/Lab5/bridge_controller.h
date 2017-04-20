@@ -18,8 +18,7 @@ typedef struct  {
 	int southBuffer; 
 	int carOnBridge;
 	
-	
-}	bridgeController;
+} bridgeController;
 
 void Ncar_sensor(bridgeController *self, int arg);
 void Nbridge_sensor(bridgeController *self, int arg);
