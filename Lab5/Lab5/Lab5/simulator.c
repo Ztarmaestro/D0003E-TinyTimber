@@ -24,19 +24,27 @@ int northQ=0;
 int southQ=0;
 int northLightG=0;
 int southLightG=0;
+char *arg = 0;
+
+pthread_t TrafThread;
+pthread_t LightThread;
+pthread_t GUIThread;
+sem_t GuiSem;
+
 
 int comfile;
 
 int mutex = 0;
 
-void *GUI(void *arg);
 
+void *lights(void *arg);
+void *GUI(void *arg);
 void initCom1(){
-	Struct termios Options;
+	struct termios Options;
 	comfile = open("/dev/ttyS0", O_RDWR |O_NOCTTY);
 	
 	/* Get default for port */
-	tcgetattr(PortFile, &Options);
+	tcgetattr(comfile, &Options);
 	/*Set baud rate in and out*/
 	cfsetispeed(&Options, B9600);
 	cfsetospeed(&Options, B9600);
@@ -47,8 +55,8 @@ void initCom1(){
 	/* wait untill atleast one char recieved */
 	Options.c_cc[VMIN] = 1;
 	/* set new settings */
-	tcsetattr(comFile,TCSANOW,&Options);
-	tcflush(PortFile, TCIFLUSH);
+	tcsetattr(comfile,TCSANOW,&Options);
+	tcflush(comfile, TCIFLUSH);
 	
 }
 
@@ -56,10 +64,11 @@ void comfileWrite(uint8_t c){
 	mutex = 1;
 	write(comfile, &c, 1);
 	mutex = 0;
+	sem_post(&GuiSem);
 	
 }
 
-void lights(void *arg){
+void *lights(void *arg){
 	while (1){
 		uint8_t filebuffer;
 		read(comfile, &filebuffer, 1);
@@ -77,7 +86,7 @@ void lights(void *arg){
 		}
 		if (filebuffer == 0x6){
 			//If southLight is green and northLight is red
-			southQ -= 1
+			southQ -= 1;
 			comfileWrite(0x8);
 			northLightG = 0;
 			southLightG = 0;
@@ -87,13 +96,13 @@ void lights(void *arg){
 
 void cars(void *a){
 	while(1){
-		uint8_t keyPressed = getChar();
-		if (keyPressed == "s"){
+		uint8_t keyPressed = getchar();
+		if (keyPressed == 's'){
 			southQ +=1;
 			//Add 1 to south Q
 			comfileWrite(0x4);
 			//Write out a car on screen
-		} else if (keyPressed == "n"){
+		} else if (keyPressed == 'n'){
 			northQ +=1;
 			//Add 1 to north Q
 			comfileWrite(0x1);
@@ -105,19 +114,21 @@ void cars(void *a){
 void *GUI(void *arg){
 	while (1){
 		//run sem on gui
-		
+		sem_wait(&GuiSem);
 		//GUI ART
 		mutex = 1;
-		printf("");
-		printf("");
-		printf("");
+
+		printf("%d North Light	   South Light	%d\n",northLightG,southLightG);
+		printf("%d North Que	South Que %d\n",northQ,southQ);
 		mutex = 0;		
 	}
 }
 
-void main(){
+main(){
 	initCom1();
-	
+	pthread_create(&TrafThread, NULL, lights, &arg);
+	pthread_create(&GUIThread,NULL,GUI, &arg);
+	sem_init(&GuiSem, 0, 0);
 	//Start treads & init sem
 	
 	cars(NULL);

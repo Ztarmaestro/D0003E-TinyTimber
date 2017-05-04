@@ -17,14 +17,19 @@ typedef struct  {
 	int northBuffer;
 	int southBuffer; 
 	int carOnBridge;
+	int timeoutCounter;
 	
 } bridgeController;
 
+void bridgeSensor(bridgeController *self, int arg);
+void Ngreenlight(bridgeController *self, int arg);
+void Sgreenlight(bridgeController *self, int arg);
+void carSensors(bridgeController *self, int arg);
+
+
+/*
 void Ncar_sensor(bridgeController *self, int arg);
 void Nbridge_sensor(bridgeController *self, int arg);
 void Scar_sensor(bridgeController *self, int arg);
-void Sbridge_sensor(bridgeController *self, int arg);
-void Ngreenlight(bridgeController *self, int arg);
-void Sgreenlight(bridgeController *self, int arg);
-
+void Sbridge_sensor(bridgeController *self, int arg);*/
 #endif /* BRIDGE_CONTROLLER_H_ */

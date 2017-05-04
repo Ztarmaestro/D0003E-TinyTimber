@@ -5,8 +5,7 @@
 #include <unistd.h>
 #include <avr/interrupt.h>
 #include "GUI.h"
-#include "pulse.h"
-#include "joystick.h"
+
 
  //function to write a char at a position
  void writeChar(char ch, int pos)

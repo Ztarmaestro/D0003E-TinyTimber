@@ -141,9 +141,6 @@
     <Compile Include="library.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="simulator.c">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="TinyTimber.c">
       <SubType>compile</SubType>
     </Compile>

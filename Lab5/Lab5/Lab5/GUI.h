@@ -1,8 +1,9 @@
-#include "TinyTimber.h"
-#include "joystick.h"
+
+
 
 #ifndef GUI_H_
 #define GUI_H_
+#include "TinyTimber.h"
 
 typedef struct{
 	Object super;
